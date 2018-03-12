@@ -25,7 +25,7 @@ class Studenci extends Module{
       $stmt->execute(array());
       $data["grupa"] = array(
         "all" => $stmt->fetchAll(PDO::FETCH_ASSOC),
-        "active" => $data["groupid"]
+        "active" => isset($data["groupid"])?$data["groupid"]:-1
       );
     }else if($action == "list"){
        if(isset($_GET["groupid"]))$this->queries["list"] = $this->queries["list_by_group"];
