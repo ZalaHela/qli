@@ -1,0 +1,40 @@
+<div class="col-sm-9">
+    <h4><small> 
+       
+        <?php if($_GET["action"]=="create_form"){ ?>
+        <i class="glyphicon glyphicon-paperclip"></i> Nowa Grupa
+        <?php } else { ?>
+        <i class="glyphicon glyphicon-edit"></i> Edytuj Grupę
+        <a href="?m=<?php echo $_GET["m"]; ?>&action=remove&id=<?php echo $_GET["id"]; ?>">
+            (<i class="glyphicon glyphicon-remove"></i> Usuń)</a>
+        
+        <?php } ?>
+    </small></h4>
+    <hr>
+    <form role="form" method="post" 
+        action="?m=<?php echo $_GET["m"]; ?>&action=<?php action();?>">   
+        <input type="hidden" name="form" value="true">  
+
+        <div class="form-group">
+            <label>Nazwa</label>
+            <input class="form-control" placeholder="Enter text" name="name" value="<?php get($data,"name"); ?>" >
+        </div>
+
+        <div class="form-group">
+            <label>Opis</label>
+            <input class="form-control" placeholder="Enter text" name="descr" value="<?php get($data,"descr"); ?>" >
+        </div>
+
+
+        <?php if(isset($data)) { ?>
+        <button type="submit" class="btn btn-default">  
+            <span class="glyphicon glyphicon-floppy-disk"></span> Zapisz
+        </button>
+        <?php } else { ?>
+        <button type="submit" class="btn btn-default">  
+            <span class="glyphicon glyphicon-plus"></span> Dodaj
+        </button>
+        <?php } ?>
+
+    </form>
+ </div>

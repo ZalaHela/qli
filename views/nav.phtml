@@ -1,0 +1,44 @@
+<?php
+function is_acvite($what){
+    global $_GET;
+    if(isset($_GET["m"]) && $_GET["m"]==$what) echo 'class="active"';
+}
+ 
+?>
+ 
+<div class="col-sm-3 sidenav">
+  <br> 
+  <ul class="nav nav-pills nav-stacked">
+    <li <?php is_acvite("studenci"); is_acvite("payments"); ?>>
+        <a href="?m=studenci">
+        <i class="glyphicon glyphicon-user"></i> 
+         Studenci
+        </a>
+    </li>
+    <li <?php is_acvite("grupy"); ?>> 
+        <a href="?m=grupy">
+        <i class="glyphicon glyphicon-paperclip"></i> 
+        Grupy
+        </a>
+    </li>
+    <li <?php is_acvite("import"); ?>> 
+        <a href="?m=import">
+        <i class="glyphicon glyphicon-cloud-upload"></i>    
+        Import
+        </a>
+    </li>
+    <li <?php is_acvite("harmonogram"); ?>> 
+        <a href="?m=harmonogram">  
+        <i class="glyphicon glyphicon-calendar"></i> 
+        Harmonogram Opłat
+        </a>
+    </li>
+    <li <?php is_acvite("taryfy"); ?>> 
+        <a href="?m=taryfy">
+        <i class="glyphicon glyphicon-usd"></i> 
+        Taryfy
+        </a>
+    </li>
+  </ul><br>
+</div>
+

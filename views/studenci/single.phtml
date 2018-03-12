@@ -1,0 +1,55 @@
+<div class="col-sm-9">
+    <h4><small> 
+       
+        <?php if($_GET["action"]=="create_form"){ ?>
+        <i class="glyphicon glyphicon-user"></i> Nowa Osoba
+        <?php } else { ?>
+        <i class="glyphicon glyphicon-edit"></i> Edytuj Osobę
+        <a href="?m=<?php echo $_GET["m"]; ?>&action=remove&id=<?php echo $_GET["id"]; ?>">
+            (<i class="glyphicon glyphicon-remove"></i> Usuń)</a>
+        <?php } ?>
+
+    </small></h4>
+    <hr>
+
+    <form role="form" method="post" 
+        action="?m=<?php echo $_GET["m"]; ?>&action=<?php action($data);?>">   
+        <input type="hidden" name="form" value="true">  
+
+        <div class="form-group">
+            <label>Nazwisko</label>
+            <input class="form-control" placeholder="Enter text" name="last" value="<?php get($data,"last"); ?>" >
+        </div>
+        <div class="form-group">
+            <label>Imię</label>
+            <input class="form-control" placeholder="Enter text" name="first" value="<?php get($data,"first"); ?>" >
+        </div>
+    
+        <div class="form-group">
+            <label>Telefon</label>
+            <input class="form-control" placeholder="Enter text" name="phone" value="<?php get($data,"phone"); ?>" >
+        </div>
+        
+        <div class="form-group">
+            <label>Grupa</label>
+            <select name="groupid" class="form-control">
+                <?php foreach($data["grupa"]["all"] as $row) { ?>
+                <option value="<?php echo $row["id"] ?>" 
+                    <?php if ($row["id"] == $data["grupa"]["active"]) echo "selected"; ?>
+                ><?php echo $row["name"] ?></option>
+                <?php } ?>
+            </select>
+        </div>
+
+        <?php if($_GET["action"]=="create_form"){ ?>
+        <button type="submit" class="btn btn-default">  
+            <span class="glyphicon glyphicon-plus"></span> Dodaj
+        </button>
+        <?php } else { ?>
+        <button type="submit" class="btn btn-default">  
+            <span class="glyphicon glyphicon-plus"></span> Zapisz
+        </button>
+        <?php } ?>
+
+    </form>
+ </div>

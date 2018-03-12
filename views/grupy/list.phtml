@@ -1,0 +1,31 @@
+<div class="col-sm-9">
+    <h4><small>
+        <span class="glyphicon glyphicon-paperclip"></span>  
+        Grupy (<a href="?m=<?php echo $_GET["m"]; ?>&action=create_form">  
+        <span class="glyphicon glyphicon-plus"></span> Dodaj </a>) </small></h4>
+    <hr>
+    <table width="100%" class="table table-bordered table-hover" >
+        <thead>
+        <tr>
+        <th>ID</th>
+        <th>Nazwa</th>
+        <th>Opis</th>
+        <th>Listy</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php foreach($data["table"] as $row){ ?>
+        <tr>
+            <td><?php echo $row["id"]; ?></td>
+            <td><a href="?m=<?php echo $_GET["m"]; ?>&action=edit&id=<?php echo $row["id"]; ?>">
+                <?php echo $row["name"]; ?>
+            </a></td>
+            <td><?php echo $row["descr"]; ?></td>
+            <td><a href="?m=studenci&groupid=<?php echo $row["id"]; ?>">Lista Studentów</a></td>
+        </tr>
+        <?php } ?>
+        </tbody>
+    </table>
+</div>
+
+ 

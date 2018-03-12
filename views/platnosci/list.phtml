@@ -1,0 +1,33 @@
+<div class="col-sm-9">
+    <h4><small>
+        <span class="glyphicon glyphicon-usd"></span>  
+        Zobowiązania (<a href="?m=<?php echo $_GET["m"]; ?>&action=create_form&pid=<?php echo $_GET["pid"]?>">  
+        <span class="glyphicon glyphicon-plus"></span> Dodaj </a>) </small></h4>
+    <hr>
+
+    Zobowiązania użytkownika 
+    <a href="?m=studenci&action=edit&id=<?php echo $_GET["pid"]?>"><?php echo $data["person"]; ?></a>
+    <br>
+    Saldo: <?php echo $data["saldo"]; ?>
+    <br><br>
+    <table width="100%" class="table table-bordered table-hover" >
+        <thead>
+        <tr>
+        <th>Opis</th>
+        <th> <?php sorted_column("Wartość", "amt"); ?> </th>
+        <th> <?php sorted_column("Data", "tdate"); ?> </th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php foreach($data["table"] as $row){ ?>
+        <tr onclick="window.location.href='?m=<?php echo $_GET["m"]; ?>&action=edit&id=<?php echo $row["id"]; ?>&pid=<?php echo $_GET["pid"]?>'" >
+            <td><?php echo $row["descr"]; ?></td>
+            <td><?php echo $row["amt"]; ?></td>
+            <td><?php echo $row["tdate"]; ?></td>
+        </tr>
+        <?php } ?>
+        </tbody>
+    </table>
+</div>
+
+ 

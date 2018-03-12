@@ -1,0 +1,5 @@
+create database apka;
+
+create table person(id int primary key auto_increment, first text, last text, phone text, groupid int);
+create table groupa(id int primary key auto_increment, name varchar(64) unique, descr text);
+create table peyments(id int primary key auto_increment, amt double , descr text, tdate datetime, pid int)
