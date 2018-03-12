@@ -1,7 +1,7 @@
 <?php
 $db = new PDO('mysql:host=localhost;dbname=apka;charset=utf8mb4', 'root', '');
 $db->setAttribute(PDO::ATTR_EMULATE_PREPARES,false);
-//$db->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
+$db->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
 
 require("../views/head.phtml");
 require("../views/nav.phtml");

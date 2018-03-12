@@ -99,7 +99,7 @@ class Module {
     $matches="";
     preg_match_all('/\s*([^= ,]+)=\?\s*/', $query, $matches, PREG_SET_ORDER);
     $values = array();
-    foreach($matches as $m) array_push($values, $arr[$m[1]]); 
+    foreach($matches as $m) array_push($values, isset($arr[$m[1]])?$arr[$m[1]]:NULL); 
     return $values;
   }
 
@@ -134,7 +134,8 @@ class Module {
 
     $stmt = $db->prepare($this->queries["insert"]);
     $ok = $stmt->execute($this->get_values($this->queries["insert"], $_POST, $_GET));
- 
+    //$stmt->debugDumpParams();
+
     if($ok){
       $type="success";
       $message="Stworzono";
