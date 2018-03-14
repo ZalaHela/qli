@@ -1,0 +1,46 @@
+<div class="col-sm-9">
+    <h4><small>
+        <span class="glyphicon glyphicon-user"></span>  
+        Import (<a href="?m=<?php echo $_GET["m"]; ?>&action=create_form">  
+        <span class="glyphicon glyphicon-plus"></span> Dodaj </a>) </small></h4>
+    <hr>
+
+    <form role="form" method="post" 
+        action="?m=<?php echo $_GET["m"]; ?>&action=<?php action($data);?>">   
+        <div class="form-group">
+        <label>Wybierz plik</label>
+        <input type="file" class="form-control" placeholder="Enter text" name="last" value="">
+        </div>
+    </form>
+    <h4><small>
+        Wynik </small></h4>
+
+    <table width="100%" class="table table-bordered table-hover" >
+        <thead>
+        <tr>
+
+        <th> <?php sorted_column("Nr Transakcji", "last"); ?> </th>
+        <th> <?php sorted_column("Data", "first"); ?> </th>
+        <th> <?php sorted_column("Tutul", "phone"); ?> </th>
+        <th> <?php sorted_column("Numer Rachunku", "grupa"); ?> </th>
+        <th> <?php sorted_column("Kwota", "saldo"); ?> </th>
+    
+        </tr>
+        </thead>
+        <tbody>
+        <?php foreach($data["table"] as $row){ ?>
+        <tr>
+            <td><a href="?m=<?php echo $_GET["m"]; ?>&action=edit&id=<?php echo $row["id"]; ?>">
+                <?php echo $row["nr_transakcji"]; ?> </a></td>
+            <td><?php echo $row["data"]; ?></td>
+            <td><?php echo $row["tytul"]; ?></td>
+            <td><?php echo $row["nr_rachunku"]; ?></td>
+            <td><?php echo $row["kwota"]; ?></td>
+             
+        </tr>
+        <?php } ?>
+        </tbody>
+    </table>
+</div>
+
+ 
