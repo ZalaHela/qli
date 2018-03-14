@@ -8,12 +8,12 @@
     <form role="form" method="post" 
         action="?m=<?php echo $_GET["m"]; ?>&action=<?php action($data);?>">   
         <div class="form-group">
-        <label>Wybierz plik</label>
+        <label>Wybierz plik CSV</label>
         <input type="file" class="form-control" placeholder="Enter text" name="last" value="">
         </div>
     </form>
     <h4><small>
-        Wynik </small></h4>
+        Transkacje do zaakceptowania </small></h4>
 
     <table width="100%" class="table table-bordered table-hover" >
         <thead>
@@ -24,19 +24,21 @@
         <th> <?php sorted_column("Tutul", "phone"); ?> </th>
         <th> <?php sorted_column("Numer Rachunku", "grupa"); ?> </th>
         <th> <?php sorted_column("Kwota", "saldo"); ?> </th>
+        <th> <?php sorted_column("Osoba", "osoba"); ?> </th>
+        <th> Akcja </th>
     
         </tr>
         </thead>
         <tbody>
         <?php foreach($data["table"] as $row){ ?>
         <tr>
-            <td><a href="?m=<?php echo $_GET["m"]; ?>&action=edit&id=<?php echo $row["id"]; ?>">
-                <?php echo $row["nr_transakcji"]; ?> </a></td>
+            <td><?php echo $row["nr_transakcji"]; ?></td>
             <td><?php echo $row["data"]; ?></td>
             <td><?php echo $row["tytul"]; ?></td>
             <td><?php echo $row["nr_rachunku"]; ?></td>
             <td><?php echo $row["kwota"]; ?></td>
-             
+            <td><?php echo $row["osoba"]; ?></td>
+            <td> <a href="?m=import&action=edit&id=">Edytuj</a> | Zatwierdź</td> 
         </tr>
         <?php } ?>
         </tbody>
