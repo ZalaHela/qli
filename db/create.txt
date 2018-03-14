@@ -3,4 +3,4 @@ create database apka;
 create table person(id int primary key auto_increment, first text, last text, phone text, groupid int);
 create table groupa(id int primary key auto_increment, name varchar(64) unique, descr text);
 create table peyments(id int primary key auto_increment, amt double , descr text, tdate datetime, pid int)
-create table timport(id int primary key auto_increment, nr_transakcji varchar(64) unique, data date, kontrahent text, tytul text, nr_rachunku text, kwota double, personid int, importdetails text)
+create table timport(id int primary key auto_increment, nr_transakcji varchar(64) unique, data date, kontrahent text, tytul text, nr_rachunku text, kwota double, personid int, importdetails text);
