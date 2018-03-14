@@ -10,9 +10,12 @@ require("../views/nav.phtml");
 require("../views/studenci/index.php");
 require("../views/grupy/index.php");
 require("../views/platnosci/index.php");
+require("../views/import/index.php");
+
 $studenci = new Studenci(); 
 $grupy = new Grupy(); 
 $platnosci = new Payments(); 
+$import = new Import();
 
 if(isset($_GET["m"]) && $_GET["m"] == "studenci"){
 	$studenci->handle();
@@ -20,8 +23,9 @@ if(isset($_GET["m"]) && $_GET["m"] == "studenci"){
 	$grupy->handle();
 }else if(isset($_GET["m"]) && $_GET["m"] == "payments"){
 	$platnosci->handle();
+}else if(isset($_GET["m"]) && $_GET["m"] == "import"){
+	$import->handle();
 }
-
 
 
 require("../views/foot.phtml");
