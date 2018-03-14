@@ -1,1 +1,1 @@
-ostra jazda na gicie
+ostra jazda na gacie
