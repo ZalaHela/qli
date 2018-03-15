@@ -1,0 +1,35 @@
+<div class="col-sm-9">
+    <h4><small>
+        <span class="glyphicon glyphicon-paperclip"></span>  
+        Harmonogramy Opłat (<a href="?m=<?php echo $_GET["m"]; ?>&action=create_form">  
+        <span class="glyphicon glyphicon-plus"></span> Dodaj </a>) </small></h4>
+    <hr>
+    <table width="100%" class="table table-bordered table-hover" >
+        <thead>
+        <tr>
+        
+        <th> <?php sorted_column("Nazwa", "nazwa"); ?> </th>
+        <th> <?php sorted_column("Od", "od"); ?> </th>
+        <th> <?php sorted_column("Do", "do"); ?> </th>
+        <th> <?php sorted_column("Płatne", "platne"); ?> </th>
+        <th> <?php sorted_column("Czas Na Zapłacenie", "czas_na_zaplacenie"); ?> </th>
+        <th> <?php sorted_column("Taryfa", "taryfa"); ?> </th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <?php foreach($data["table"] as $row){ ?>
+        <tr>
+            <td><a href="?m=<?php echo $_GET["m"]; ?>&action=edit&id=<?php echo $row["id"]; ?>">
+                <?php echo $row["nazwa"]; ?> </a>
+            </td>
+            <td><?php echo $row["od"]; ?></td>
+            <td><?php echo $row["do"]; ?></td>
+            <td><?php echo $row["platne"]; ?></td>
+            <td><?php echo $row["czas_na_zaplacenie"]; ?></td>
+            <td><?php echo $row["taryfa"]; ?></td>
+        </tr>
+        <?php } ?>
+        </tbody>
+    </table>
+</div>

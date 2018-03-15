@@ -17,6 +17,30 @@ class Import extends Module{
     "update" => "UPDATE person SET first=?, last=?, phone=?, groupid=? WHERE id=?",
     "insert" => "INSERT INTO person SET first=?, last=?, phone=?, groupid=?"
   );
+
+
+  function custom_handle(){
+    global $_POST;
+    global $_GET;
+
+    if(isset($_GET["action"]) && $_GET["action"]=="upload"){
+      echo "yey! upload!";
+      $target_dir = "../uploads/";
+      $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
+      if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
+        echo "The file ". basename( $_FILES["fileToUpload"]["name"]). " has been uploaded.";
+      } else {
+        echo "Sorry, there was an error uploading your file.";
+      }
+
+      $csv = array_map('str_getcsv', file( $target_file ));
+      print_r($csv);
+
+      return true;
+    }
+
+    return false;
+  }
  
    
 };

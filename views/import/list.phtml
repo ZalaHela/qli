@@ -6,12 +6,18 @@
     <hr>
 
     <form role="form" method="post" 
-        action="?m=<?php echo $_GET["m"]; ?>&action=<?php action($data);?>">   
+        action="?m=<?php echo $_GET["m"]; ?>&action=upload" enctype="multipart/form-data">   
         <div class="form-group">
         <label>Wybierz plik CSV</label>
-        <input type="file" class="form-control" placeholder="Enter text" name="last" value="">
+        <input type="file" class="form-control" placeholder="Enter text" name="fileToUpload" value="">
         </div>
+        <button type="submit" class="btn btn-default">  
+            <span class="glyphicon glyphicon-cloud-upload"></span> Dodaj
+        </button>
     </form>
+
+
+    <hr/>
     <h4><small>
         Transkacje do zaakceptowania </small></h4>
 
@@ -38,7 +44,7 @@
             <td><?php echo $row["nr_rachunku"]; ?></td>
             <td><?php echo $row["kwota"]; ?></td>
             <td><?php echo $row["osoba"]; ?></td>
-            <td> <a href="?m=import&action=edit&id=">Edytuj</a> | Zatwierdź</td> 
+            <td> <a href="?m=<?php echo $_GET["m"]; ?>&action=edit&id=">Edytuj</a> | Zatwierdź</td> 
         </tr>
         <?php } ?>
         </tbody>

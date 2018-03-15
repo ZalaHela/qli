@@ -193,6 +193,8 @@ class Module {
   } 
 
   function custom_handle(){
+    global $_POST;
+    global $_GET;
     return false;
   }
 
