@@ -29,6 +29,23 @@
             <label>Telefon</label>
             <input class="form-control" placeholder="Enter text" name="phone" value="<?php get($data,"phone"); ?>" >
         </div>
+
+        <div class="form-group">
+            <label>Od kiedy uczęszcza</label>
+            <div class='input-group date' id='datetimepicker1'>
+                <input type='text' class="form-control" name="odkiedy" value="<?php get($data,'odkiedy', date("Y-m-d H:i:s")); ?>" />
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+                <script type="text/javascript">
+                    $(function () {
+                        $('#datetimepicker1').datetimepicker({
+                         format: 'YYYY-MM-DD'
+                        });
+                    });
+                </script>
+            </div>
+        </div>
         
         <div class="form-group">
             <label>Grupa</label>
@@ -37,6 +54,17 @@
                 <option value="<?php echo $row["id"] ?>" 
                     <?php if ($row["id"] == $data["grupa"]["active"]) echo "selected"; ?>
                 ><?php echo $row["name"] ?></option>
+                <?php } ?>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Harmonogram Opłat</label>
+            <select name="harmonogramid" class="form-control">
+                <?php foreach($data["harmonogram"]["all"] as $row) { ?>
+                <option value="<?php echo $row["id"] ?>" 
+                    <?php if ($row["id"] == $data["harmonogram"]["active"]) echo "selected"; ?>
+                ><?php echo $row["nazwa"] ?></option>
                 <?php } ?>
             </select>
         </div>

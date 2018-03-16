@@ -8,8 +8,7 @@
         <thead>
         <tr>
 
-        <th> <?php sorted_column("Nazwisko", "last"); ?> </th>
-        <th> <?php sorted_column("Imię", "first"); ?> </th>
+        <th> <?php sorted_column("Nazwisko Imię", "last"); ?> </th>
         <th> <?php sorted_column("Telefon", "phone"); ?> </th>
         <th> <?php sorted_column("Grupa", "grupa"); ?> </th>
         <th> <?php sorted_column("Saldo", "saldo"); ?> </th>
@@ -21,7 +20,6 @@
         <tr>
             <td><a href="?m=<?php echo $_GET["m"]; ?>&action=edit&id=<?php echo $row["id"]; ?>">
                 <?php echo $row["last"]; ?> </a></td>
-            <td><?php echo $row["first"]; ?></td>
             <td><?php echo $row["phone"]; ?></td>
             <td><?php echo $row["grupa"]; ?></td>
             <td onclick="window.location.href='?m=payments&action=list&pid=<?php echo $row["id"]; ?>'">

@@ -4,6 +4,33 @@
         Harmonogramy Opłat (<a href="?m=<?php echo $_GET["m"]; ?>&action=create_form">  
         <span class="glyphicon glyphicon-plus"></span> Dodaj </a>) </small></h4>
     <hr>
+
+    <form action="?m=<?php echo $_GET["m"]; ?>&action=nalicz" method="POST">
+        <div class="form-group">
+            <label>Data Rozliczenia</label>
+            <div class='input-group date' id='datetimepicker2'>
+                <input type='text' class="form-control" name="evaldate" value="<?php echo date("Y-m-d H:i:s"); ?>" />
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+                <script type="text/javascript">
+                    $(function () {
+                        $('#datetimepicker2').datetimepicker({
+                         format: 'YYYY-MM-DD'
+                        });
+                    });
+                </script>
+            </div>
+        </div>
+
+       
+        <button type="submit" class="btn btn-default">  
+                <span class="glyphicon glyphicon-ok"></span> Nalicz Obciążenia Dla Wybranego Miesiąca
+        </button>
+    </form>
+
+    <br><br>
+    
     <table width="100%" class="table table-bordered table-hover" >
         <thead>
         <tr>

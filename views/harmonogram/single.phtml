@@ -23,7 +23,7 @@
         <div class="form-group">
             <label>Obowiązuje Od</label>
             <div class='input-group date' id='datetimepicker1'>
-                <input type='text' class="form-control" name="od" value="<?php get($data,'od'); ?>" />
+                <input type='text' class="form-control" name="od" value="<?php get($data,'od',date("Y-m-d H:i:s")); ?>" />
                 <span class="input-group-addon">
                     <span class="glyphicon glyphicon-calendar"></span>
                 </span>

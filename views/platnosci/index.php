@@ -10,11 +10,11 @@ class Payments extends Module{
   );
 
   public $queries = array(
-    "list" => "SELECT * FROM peyments where pid=?",
-    "delete" => "DELETE FROM peyments WHERE id=?",
-    "single" => "SELECT * FROM peyments WHERE id=?",
-    "update" => "UPDATE peyments SET descr=?, tdate=?, amt=?, pid=? WHERE id=?",
-    "insert" => "INSERT INTO peyments SET descr=?, tdate=?, amt=?, pid=?"
+    "list" => "SELECT * FROM platnosci where pid=?",
+    "delete" => "DELETE FROM platnosci WHERE id=?",
+    "single" => "SELECT * FROM platnosci WHERE id=?",
+    "update" => "UPDATE platnosci SET descr=?, tdate=?, amt=?, pid=? WHERE id=?",
+    "insert" => "INSERT INTO platnosci SET descr=?, tdate=?, amt=?, pid=?"
   );
 
   function load_data($data, $action){
@@ -27,7 +27,7 @@ class Payments extends Module{
       $person = $stmt->fetchAll(PDO::FETCH_ASSOC);
       $data["person"] = $person[0]["last"]." ".$person[0]["first"];
 
-      $stmt = $db->prepare("SELECT sum(amt) as saldo FROM peyments WHERE pid=?");
+      $stmt = $db->prepare("SELECT sum(amt) as saldo FROM platnosci WHERE pid=?");
       $stmt->execute(array($_GET["pid"]));
       $saldo = $stmt->fetchAll(PDO::FETCH_ASSOC);
       $data["saldo"] = $saldo[0]["saldo"];
