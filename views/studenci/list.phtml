@@ -12,6 +12,7 @@
         <th> <?php sorted_column("Telefon", "phone"); ?> </th>
         <th> <?php sorted_column("Grupa", "grupa"); ?> </th>
         <th> <?php sorted_column("Saldo", "saldo"); ?> </th>
+        <th> Akcja </th>
     
         </tr>
         </thead>
@@ -22,8 +23,12 @@
                 <?php echo $row["last"]; ?> </a></td>
             <td><?php echo $row["phone"]; ?></td>
             <td><?php echo $row["grupa"]; ?></td>
-            <td onclick="window.location.href='?m=payments&action=list&pid=<?php echo $row["id"]; ?>'">
-                <?php echo $row["saldo"]; ?> </td>
+            <td onclick="window.location.href=''">
+                <?php echo $row["saldo"]; ?> 
+            </td>
+            <td>
+                <a href="?m=payments&action=list&pid=<?php echo $row["id"]; ?>" > szczegóły </a>
+            </td>
         </tr>
         <?php } ?>
         </tbody>

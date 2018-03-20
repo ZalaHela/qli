@@ -25,11 +25,9 @@
         <thead>
         <tr>
 
-        <th> <?php sorted_column("Nr Transakcji", "last"); ?> </th>
-        <th> <?php sorted_column("Data", "first"); ?> </th>
-        <th> <?php sorted_column("Tutul", "phone"); ?> </th>
-        <th> <?php sorted_column("Numer Rachunku", "grupa"); ?> </th>
-        <th> <?php sorted_column("Kwota", "saldo"); ?> </th>
+        <th> <?php sorted_column("Data", "data"); ?> </th>
+        <th> <?php sorted_column("Tytuł", "tytul"); ?> </th>
+        <th> <?php sorted_column("Kwota", "kwota"); ?> </th>
         <th> <?php sorted_column("Osoba", "osoba"); ?> </th>
         <th> Akcja </th>
     
@@ -38,13 +36,19 @@
         <tbody>
         <?php foreach($data["table"] as $row){ ?>
         <tr>
-            <td><?php echo $row["nr_transakcji"]; ?></td>
             <td><?php echo $row["data"]; ?></td>
             <td><?php echo $row["tytul"]; ?></td>
-            <td><?php echo $row["nr_rachunku"]; ?></td>
             <td><?php echo $row["kwota"]; ?></td>
             <td><?php echo $row["osoba"]; ?></td>
-            <td> <a href="?m=<?php echo $_GET["m"]; ?>&action=edit&id=">Edytuj</a> | Zatwierdź</td> 
+            <td> 
+                <a href="?m=<?php echo $_GET["m"]; ?>&action=edit&id=<?php echo $row["id"]; ?>">Edytuj</a> 
+                | 
+                <a href="?m=<?php echo $_GET["m"]; ?>&action=accept&id=<?php echo $row["id"]; ?>">Zatwierdź</a> 
+                | 
+                <a href="?m=<?php echo $_GET["m"]; ?>&action=remove&id=<?php echo $row["id"]; ?>">Usuń</a> 
+                <br> 
+                
+            </td> 
         </tr>
         <?php } ?>
         </tbody>

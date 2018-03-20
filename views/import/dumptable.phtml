@@ -1,0 +1,50 @@
+<div class="col-sm-9">
+<table  width="100%" class="table table-bordered table-hover" >
+   <thead>
+   <th> Data transakcji </th>
+   <th> Data ksiêgowania </th>
+   <th> Dane kontrahenta </th>
+   <th> Tytu³ </th>
+   <th> Nr rachunku </th>
+   <th> Nazwa banku </th>
+   <th> Szczegó³y </th> 
+   <th> Nr transakcji </th>
+   <th> Kwota transakcji (waluta rachunku) </th>
+   <th> Waluta </th>
+   <th> Kwota blokady/zwolnienie blokady </th>
+   <th> Waluta </th>
+   <th> Kwota p³atnoœci w walucie </th>
+   <th> Waluta </th>
+   <th> Saldo po transakcji </th>
+   <th> Waluta </th>
+  </th>
+</thead>
+<tbody>
+  <?php
+    foreach($csv as $r){
+      $csvr = $r
+  ?>
+  <tr>
+   <td> <?php echo $csvr[0]; ?> </td>
+   <td> <?php echo $csvr[1]; ?> </td>
+   <td> <?php echo $csvr[2]; ?> </td>
+   <td> <?php echo $csvr[3]; ?> </td>
+   <td> <?php echo $csvr[4]; ?> </td>
+   <td> <?php echo $csvr[5]; ?> </td>
+   <td> <?php echo $csvr[6]; ?> </td>
+   <td> <?php echo $csvr[7]; ?> </td>
+   <td> <?php echo $csvr[8]; ?> </td>
+   <td> <?php echo $csvr[9]; ?> </td>
+   <td> <?php echo $csvr[10]; ?> </td>
+   <td> <?php echo $csvr[11]; ?> </td>
+   <td> <?php echo $csvr[12]; ?> </td>
+   <td> <?php echo $csvr[13]; ?> </td>
+   <td> <?php echo $csvr[14]; ?> </td>
+   <td> <?php echo $csvr[15]; ?> </td>
+  </tr> 
+  <?php
+  }
+  ?>
+</tbody>
+</table>
+</div>

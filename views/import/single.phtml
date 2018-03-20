@@ -17,25 +17,25 @@
         <input type="hidden" name="form" value="true">  
 
         <div class="form-group">
-            <label>Nazwisko</label>
-            <input class="form-control" placeholder="Enter text" name="last" value="<?php get($data,"last"); ?>" >
+            <label>Tytuł przelewu</label>
+            <input class="form-control" placeholder="Enter text" name="tytul" value="<?php get($data,"tytul"); ?>" >
         </div>
         <div class="form-group">
-            <label>Imię</label>
-            <input class="form-control" placeholder="Enter text" name="first" value="<?php get($data,"first"); ?>" >
+            <label>Data</label>
+            <input class="form-control" placeholder="Enter text" name="data" value="<?php get($data,"data"); ?>" >
         </div>
     
         <div class="form-group">
-            <label>Telefon</label>
-            <input class="form-control" placeholder="Enter text" name="phone" value="<?php get($data,"phone"); ?>" >
+            <label>Kowta przelewu</label>
+            <input class="form-control" placeholder="Enter text" name="kwota" value="<?php get($data,"kwota"); ?>" >
         </div>
         
         <div class="form-group">
-            <label>Grupa</label>
-            <select name="groupid" class="form-control">
-                <?php foreach($data["grupa"]["all"] as $row) { ?>
+            <label>Osoba</label>
+            <select name="personid" class="form-control">
+                <?php foreach($data["person"]["all"] as $row) { ?>
                 <option value="<?php echo $row["id"] ?>" 
-                    <?php if ($row["id"] == $data["grupa"]["active"]) echo "selected"; ?>
+                    <?php if ($row["id"] == $data["person"]["active"]) echo "selected"; ?>
                 ><?php echo $row["name"] ?></option>
                 <?php } ?>
             </select>

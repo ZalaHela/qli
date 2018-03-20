@@ -38,9 +38,8 @@
         <th> <?php sorted_column("Nazwa", "nazwa"); ?> </th>
         <th> <?php sorted_column("Od", "od"); ?> </th>
         <th> <?php sorted_column("Do", "do"); ?> </th>
-        <th> <?php sorted_column("Płatne", "platne"); ?> </th>
-        <th> <?php sorted_column("Czas Na Zapłacenie", "czas_na_zaplacenie"); ?> </th>
         <th> <?php sorted_column("Taryfa", "taryfa"); ?> </th>
+        <th>   </th>
 
         </tr>
         </thead>
@@ -52,9 +51,11 @@
             </td>
             <td><?php echo $row["od"]; ?></td>
             <td><?php echo $row["do"]; ?></td>
-            <td><?php echo $row["platne"]; ?></td>
-            <td><?php echo $row["czas_na_zaplacenie"]; ?></td>
             <td><?php echo $row["taryfa"]; ?></td>
+            <td>
+                <a href="?m=studenci&harmonogramid=<?php echo $row["id"]; ?>">Lista Studentów</a>
+            </td>
+
         </tr>
         <?php } ?>
         </tbody>
