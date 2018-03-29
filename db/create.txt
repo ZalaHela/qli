@@ -1,19 +1,63 @@
 create database apka;
 
-create table person(id int primary key auto_increment, first text, last text, phone text, groupid int, harmonogramid int, odkiedy date);
+CREATE TABLE IF NOT EXISTS `groupa` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(64) DEFAULT NULL,
+  `descr` text,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB;
 
-create table groupa(id int primary key auto_increment, name varchar(64) unique, descr text);
-create table platnosci(id int primary key auto_increment, nr_tr varchar(64) unique, amt double , descr text, tdate datetime, pid int);
+CREATE TABLE IF NOT EXISTS `harmonogram` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nazwa` text NOT NULL,
+  `od` date NOT NULL,
+  `do` date NOT NULL,
+  `platne` int(1) NOT NULL,
+  `czas_na_zaplacenie` int(30) NOT NULL,
+  `taryfaid` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB;
 
-create table timport(id int primary key auto_increment, nr_transakcji varchar(64) unique, data date, kontrahent text, tytul text, nr_rachunku text, kwota double, personid int, importdetails text);
+CREATE TABLE IF NOT EXISTS `person` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `first` text,
+  `last` text,
+  `phone` text,
+  `groupid` int(11) DEFAULT NULL,
+  `harmonogramid` int(11) DEFAULT NULL,
+  `odkiedy` date DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB;
 
-CREATE TABLE harmonogram (
- id int primary key AUTO_INCREMENT,
- nazwa text,
- od date,
- do date,
- platne int,
- czas_na_zaplacenie int,
- taryfaid int
-);
+CREATE TABLE IF NOT EXISTS `platnosci` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nr_tr` varchar(64) DEFAULT NULL,
+  `amt` double DEFAULT NULL,
+  `descr` text,
+  `tdate` datetime DEFAULT NULL,
+  `pid` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `nr_tr` (`nr_tr`)
+) ENGINE=InnoDB;
 
+CREATE TABLE IF NOT EXISTS `taryfa` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nazwa` text NOT NULL,
+  `wartosc` double NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS `timport` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nr_transakcji` varchar(64) DEFAULT NULL,
+  `data` date DEFAULT NULL,
+  `kontrahent` text,
+  `tytul` text,
+  `nr_rachunku` text,
+  `kwota` double DEFAULT NULL,
+  `personid` int(11) DEFAULT NULL,
+  `importdetails` text,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `nr_transakcji` (`nr_transakcji`)
+) ENGINE=InnoDB;
