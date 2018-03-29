@@ -29,7 +29,7 @@ class Studenci extends Module{
         "active" => isset($data["groupid"])?$data["groupid"]:NULL
       );
 
-      $stmt = $db->prepare("SELECT harmonogram.id as id, CONCAT(harmonogram.nazwa ,' (', taryfa.wartosc,'zł)') as nazwa FROM harmonogram left outer join taryfa on (harmonogram.taryfaid = taryfa.id) order by nazwa");
+      $stmt = $db->prepare("SELECT harmonogram.id as id, CONCAT(harmonogram.nazwa ,' (', taryfa.wartosc,'zl)') as nazwa FROM harmonogram left outer join taryfa on (harmonogram.taryfaid = taryfa.id) order by nazwa");
       $stmt->execute(array());
       $data["harmonogram"] = array(
         "all" => $stmt->fetchAll(PDO::FETCH_ASSOC),

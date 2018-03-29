@@ -59,6 +59,7 @@ class Import extends Module{
               }
 
               $row = explode(';',$line);
+              if(!isset($row[8])) continue;
               $v = (float) $row[8];
               if($v>0){
                 try{
