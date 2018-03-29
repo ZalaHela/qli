@@ -3,9 +3,17 @@ create database apka;
 create table person(id int primary key auto_increment, first text, last text, phone text, groupid int, harmonogramid int, odkiedy date);
 
 create table groupa(id int primary key auto_increment, name varchar(64) unique, descr text);
-create table platnosci(id int primary key auto_increment, nr_tr varchar(64) unique, amt double , descr text, tdate datetime, pid int)
+create table platnosci(id int primary key auto_increment, nr_tr varchar(64) unique, amt double , descr text, tdate datetime, pid int);
 
 create table timport(id int primary key auto_increment, nr_transakcji varchar(64) unique, data date, kontrahent text, tytul text, nr_rachunku text, kwota double, personid int, importdetails text);
 
-
+CREATE TABLE harmonogram (
+ id int primary key AUTO_INCREMENT,
+ nazwa text,
+ od date,
+ do date,
+ platne int,
+ czas_na_zaplacenie int,
+ taryfaid int
+)
 
