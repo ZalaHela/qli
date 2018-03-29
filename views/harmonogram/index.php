@@ -10,7 +10,7 @@ class Harmonogram extends Module{
   );
 
   public $queries = array(
-    "list" => "SELECT harmonogram.id as id,harmonogram.nazwa as nazwa,od,do,platne, czas_na_zaplacenie, CONCAT(taryfa.nazwa ,' (', wartosc,'zł)') as taryfa FROM harmonogram left outer join taryfa on (harmonogram.taryfaid = taryfa.id)",
+    "list" => "SELECT harmonogram.id as id,harmonogram.nazwa as nazwa,od,do,platne, czas_na_zaplacenie, CONCAT(taryfa.nazwa ,' (', wartosc,'zl)') as taryfa FROM harmonogram left outer join taryfa on (harmonogram.taryfaid = taryfa.id)",
     "delete" => "DELETE FROM harmonogram WHERE id=?",
     "single" => "SELECT * FROM harmonogram WHERE id=?",
     "update" => "UPDATE harmonogram SET nazwa=?, od=?, do=?, platne=?, czas_na_zaplacenie=?, taryfaid=? WHERE id=?",
