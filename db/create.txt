@@ -15,5 +15,5 @@ CREATE TABLE harmonogram (
  platne int,
  czas_na_zaplacenie int,
  taryfaid int
-)
+);
 
