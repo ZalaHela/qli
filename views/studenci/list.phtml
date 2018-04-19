@@ -10,8 +10,10 @@
 
         <th> <?php sorted_column("Nazwisko Imię", "last"); ?> </th>
         <th> <?php sorted_column("Telefon", "phone"); ?> </th>
-        <th> <?php sorted_column("Grupa", "grupa"); ?> </th>
+        <!--<th> <?php sorted_column("Grupa", "grupa"); ?> </th>-->
         <th> <?php sorted_column("Saldo", "saldo"); ?> </th>
+        <th> <?php sorted_column("Zaległość", "zaleglosc"); ?> </th>
+        <th> <?php sorted_column("Data urodzenia", "dataurodzenia"); ?> </th>
         <th> Akcja </th>
     
         </tr>
@@ -22,10 +24,12 @@
             <td><a href="?m=<?php echo $_GET["m"]; ?>&action=edit&id=<?php echo $row["id"]; ?>">
                 <?php echo $row["last"]; ?> </a></td>
             <td><?php echo $row["phone"]; ?></td>
-            <td><?php echo $row["grupa"]; ?></td>
+           <!-- <td><?php echo $row["grupa"]; ?></td>-->
             <td onclick="window.location.href=''">
                 <?php echo $row["saldo"]; ?> 
             </td>
+             <td><?php echo $row["zaleglosc"]<0?$row["zaleglosc"]:0; ?></td>
+             <td><?php echo $row["dataurodzenia"]; ?></td>
             <td>
                 <a href="?m=payments&action=list&pid=<?php echo $row["id"]; ?>" > szczegóły </a>
             </td>

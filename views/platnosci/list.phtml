@@ -15,7 +15,9 @@
         <tr>
         <th>Opis</th>
         <th> <?php sorted_column("Wartość", "amt"); ?> </th>
-        <th> <?php sorted_column("Data", "tdate"); ?> </th>
+        <th> <?php sorted_column("Data Wystawienia", "tdate"); ?> </th>
+        <th> <?php sorted_column("Data Przedawnienia", "tdate"); ?> </th>
+        <th> <?php sorted_column("Przedawnienie", "przedawnienie"); ?> </th>
         </tr>
         </thead>
         <tbody>
@@ -24,6 +26,8 @@
             <td><?php echo $row["descr"]; ?></td>
             <td><?php echo $row["amt"]; ?></td>
             <td><?php echo $row["tdate"]; ?></td>
+            <td><?php echo $row["tprzedawnienie"]; ?></td>
+             <td><?php echo $row["przedawnienie"]; ?></td>
         </tr>
         <?php } ?>
         </tbody>

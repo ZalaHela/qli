@@ -46,8 +46,23 @@
                 </script>
             </div>
         </div>
-        
         <div class="form-group">
+            <label>Data Urodzenia</label>
+            <div class='input-group date' id='datetimepicker2'>
+                <input type='text' class="form-control" name="dataurodzenia" value="<?php get($data,'dataurodzenia', date("Y-m-d")); ?>" />
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+                <script type="text/javascript">
+                    $(function () {
+                        $('#datetimepicker2').datetimepicker({
+                         format: 'YYYY-MM-DD'
+                        });
+                    });
+                </script>
+            </div>
+        </div>
+        <!--<div class="form-group">
             <label>Grupa</label>
             <select name="groupid" class="form-control">
                 <?php foreach($data["grupa"]["all"] as $row) { ?>
@@ -56,7 +71,7 @@
                 ><?php echo $row["name"] ?></option>
                 <?php } ?>
             </select>
-        </div>
+        </div>-->
 
         <div class="form-group">
             <label>Harmonogram Opłat</label>

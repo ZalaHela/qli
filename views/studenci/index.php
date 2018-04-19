@@ -10,13 +10,19 @@ class Studenci extends Module{
   );
 
   public $queries = array(
-    "list" => "SELECT person.id as id, CONCAT(last,' ',first) as last, phone, groupa.name as grupa,  sum(platnosci.amt) as saldo  FROM person LEFT OUTER JOIN groupa ON (person.groupid=groupa.id) left outer join platnosci ON (platnosci.pid = person.id) GROUP by person.id ",
-    "list_by_group" => "SELECT person.id as id, CONCAT(last,' ',first) as last, phone, groupa.name as grupa,  sum(platnosci.amt) as saldo  FROM person JOIN groupa ON (person.groupid=groupa.id) left outer join platnosci ON (platnosci.pid = person.id) WHERE groupid=? GROUP by person.id ",
-    "list_by_harmonogram" => "SELECT person.id as id, CONCAT(last,' ',first) as last, phone, groupa.name as grupa,  sum(platnosci.amt) as saldo  FROM person JOIN groupa ON (person.groupid=groupa.id) left outer join platnosci ON (platnosci.pid = person.id) WHERE harmonogramid=? GROUP by person.id ",
+    "list_common" => "SELECT person.id as id, 
+      CONCAT(last,' ',first) as last, phone, 
+      sum(platnosci.amt) as saldo,  
+      sum(CASE WHEN platnosci.amt < 0 AND (now() <= date_add(tdate, interval (20-1) day))  
+       THEN 0
+       ELSE platnosci.amt END) as zaleglosc, date(dataurodzenia) as dataurodzenia 
+      FROM person left outer join platnosci ON (platnosci.pid = person.id) ",
+    "list_all" => "GROUP by person.id",
+    "list_by_harmonogram" => "WHERE harmonogramid=? GROUP by person.id ",
     "delete" => "DELETE FROM person WHERE id=?",
     "single" => "SELECT * FROM person WHERE id=?",
-    "update" => "UPDATE person SET first=?, last=?, phone=?, groupid=?, odkiedy=?, harmonogramid=? WHERE id=?",
-    "insert" => "INSERT INTO person SET first=?, last=?, phone=?, groupid=?, odkiedy=?, harmonogramid=?"
+    "update" => "UPDATE person SET first=?, last=?, phone=?, groupid=?, odkiedy=?, harmonogramid=?, dataurodzenia=? WHERE id=?",
+    "insert" => "INSERT INTO person SET first=?, last=?, phone=?, groupid=?, odkiedy=?, harmonogramid=?, dataurodzenia=?"
   );
  
   function load_data($data, $action){
@@ -36,8 +42,11 @@ class Studenci extends Module{
         "active" => isset($data["harmonogramid"])?$data["harmonogramid"]:NULL
       );
     }else if($action == "list"){
-      if(isset($_GET["groupid"]))$this->queries["list"] = $this->queries["list_by_group"];
-      if(isset($_GET["harmonogramid"]))$this->queries["list"] = $this->queries["list_by_harmonogram"];
+      if(isset($_GET["harmonogramid"])){
+        $this->queries["list"] = $this->queries["list_common"].$this->queries["list_by_harmonogram"];
+      }else{
+        $this->queries["list"] = $this->queries["list_common"].$this->queries["list_all"];
+      }
     }
     return $data;
   }

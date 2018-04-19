@@ -29,6 +29,7 @@
         <th> <?php sorted_column("Tytuł", "tytul"); ?> </th>
         <th> <?php sorted_column("Kwota", "kwota"); ?> </th>
         <th> <?php sorted_column("Osoba", "osoba"); ?> </th>
+        <th> <?php sorted_column("Telefon", "phone"); ?> </th>
         <th> Akcja </th>
     
         </tr>
@@ -40,6 +41,8 @@
             <td><?php echo $row["tytul"]; ?></td>
             <td><?php echo $row["kwota"]; ?></td>
             <td><?php echo $row["osoba"]; ?></td>
+            <td><?php echo $row["phone"]; ?></td>
+            
             <td> 
                 <a href="?m=<?php echo $_GET["m"]; ?>&action=edit&id=<?php echo $row["id"]; ?>">Edytuj</a> 
                 | 

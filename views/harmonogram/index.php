@@ -56,7 +56,7 @@ class Harmonogram extends Module{
           $platnosci = $stmt->fetchAll(PDO::FETCH_ASSOC);
           if(count($platnosci)==0){
             $stmt = $db->prepare("INSERT INTO platnosci SET pid=?, descr=?, nr_tr=?, amt=?, tdate=?");
-            $nazwa_tr = "Opłata za ".$data["year"]."-".$data["month"];
+            $nazwa_tr = "Oplata za ".$data["year"]."-".$data["month"];
             $arr=array($s["id"],$nazwa_tr,$numer_tr,-$h["wartosc"], $_POST["evaldate"]);
             $stmt->execute($arr);
             $ilosc++;

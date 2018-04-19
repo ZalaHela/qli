@@ -10,7 +10,7 @@ class Import extends Module{
   );
 
   public $queries = array(
-    "list" => "SELECT timport.id as id, timport.data, timport.tytul, timport.kwota, CONCAT(person.last,' ',person.first,' (',person.phone,')') as osoba FROM timport left outer join person on (person.id = timport.personid)",
+    "list" => "SELECT timport.id as id, timport.data, timport.tytul, timport.kwota, CONCAT(person.last,' ',person.first,' (',person.phone,')') as osoba, timport.phone as phone, person.id as personid FROM timport left outer join person on (person.phone = timport.phone)",
     "single" => "SELECT * FROM timport WHERE id=?",
     "delete" => "DELETE FROM timport WHERE id=?",
     "update" => "UPDATE timport SET tytul=?, data=?, kwota=?, personid=? WHERE id=?",
@@ -67,6 +67,7 @@ class Import extends Module{
                   preg_match_all("/([0-9]{3}.?[0-9]{3}.?[0-9]{3})/", $row[3] ,$matches);
 
                   $personid = NULL;
+                  $phone=NULL;
                   if(count($matches) > 0 && count($matches[0])>0){
                     $int = filter_var($matches[0][0], FILTER_SANITIZE_NUMBER_INT);
                     $lookup_by_phone = true;
@@ -77,8 +78,8 @@ class Import extends Module{
                     if(count($person) > 0) $personid = $person[0]["id"];
                   }
                   
-                  $stmt = $db->prepare("INSERT INTO timport SET nr_transakcji=?, data=?, kontrahent=?, tytul=?, nr_rachunku=?, kwota=?, personid=?, importdetails=?");
-                  $stmt->execute(array($row[7]." ".$row[0], $row[0], $row[2], $row[3], $row[4], $row[8], $personid, NULL));
+                  $stmt = $db->prepare("INSERT INTO timport SET nr_transakcji=?, data=?, kontrahent=?, tytul=?, nr_rachunku=?, kwota=?, personid=?, importdetails=?, phone=?");
+                  $stmt->execute(array($row[7]." ".$row[0], $row[0], $row[2], $row[3], $row[4], $row[8], $personid, NULL, $phone));
                   array_push($csv, $row);
                 }catch(Exception $e){
 
@@ -123,16 +124,31 @@ class Import extends Module{
       $stmt->execute(array($_GET["id"]));
       $imp = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+      
+
       if(count($imp) > 0){
         $val = $imp[0];
+
+        // get person by phone
+        $stmt = $db->prepare("SELECT * from person where phone=?");
+        $stmt->execute(array($val["phone"]));
+        $person = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
         try{
-          $stmt = $db->prepare("INSERT INTO platnosci SET pid=?, amt=?, nr_tr=?, descr=?, tdate=?");
-          $stmt->execute(array($val["personid"], $val["kwota"], $val["nr_transakcji"], "Przelew na konto: '".$val["tytul"]."'", $val["data"]));
-          $stmt = $db->prepare("DELETE from timport WHERE id=?");
-          $stmt->execute(array($_GET["id"]));
-          $type="success";
-          $message="Zapisano wpłatę '".$val["tytul"]."'";
-          require("../views/alerts/alert.phtml");
+          if(count($person) > 0) {
+            $stmt = $db->prepare("INSERT INTO platnosci SET pid=?, amt=?, nr_tr=?, descr=?, tdate=?");
+            $stmt->execute(array($person[0]["id"], $val["kwota"], $val["nr_transakcji"], "Przelew na konto: '".$val["tytul"]."'", $val["data"]));
+            $stmt = $db->prepare("DELETE from timport WHERE id=?");
+            $stmt->execute(array($_GET["id"]));
+            $type="success";
+            $message="Zapisano wpłatę '".$val["tytul"]."'";
+            require("../views/alerts/alert.phtml");
+          }else{
+             $type="danger";
+             $message="Nie istnieje taka osoba w bazie";
+             require("../views/alerts/alert.phtml");
+          }
+          
         }catch(Exception $e){
           $stmt = $db->prepare("SELECT * FROM platnosci WHERE nr_tr=?");
           $stmt->execute(array( $val["nr_transakcji"] ));

@@ -1,0 +1,2 @@
+alter table person add column dataurodzenia date;
+alter table timport add column phone text;
