@@ -17,6 +17,23 @@ class Grupy extends Module{
     "insert" => "INSERT INTO groupa SET name=?, descr=?"
   );
 
+  function validate(){
+    global $_POST;
+    global $_GET;
+
+    if(isset($_GET["action"]) && $_GET["action"]=="add_new"){
+      if(isset($_POST["name"]) && $_POST["name"] == ""){
+        $type="danger";
+        $message="Nazwa nie moze być pusta";
+        require("../views/alerts/alert.phtml");  
+        $this->h_create_form();
+        return false;
+      }
+    }
+
+    return true;
+  }
+
 };
 
 ?>

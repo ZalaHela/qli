@@ -10,11 +10,11 @@ class Harmonogram extends Module{
   );
 
   public $queries = array(
-    "list" => "SELECT harmonogram.id as id,harmonogram.nazwa as nazwa,od,do,platne, czas_na_zaplacenie, CONCAT(taryfa.nazwa ,' (', wartosc,'zl)') as taryfa FROM harmonogram left outer join taryfa on (harmonogram.taryfaid = taryfa.id)",
+    "list" => "SELECT harmonogram.id as id,harmonogram.nazwa as nazwa,od,do,platne, czas_na_zaplacenie, oplaty_miesieczne FROM harmonogram",
     "delete" => "DELETE FROM harmonogram WHERE id=?",
     "single" => "SELECT * FROM harmonogram WHERE id=?",
-    "update" => "UPDATE harmonogram SET nazwa=?, od=?, do=?, platne=?, czas_na_zaplacenie=?, taryfaid=? WHERE id=?",
-    "insert" => "INSERT INTO harmonogram SET nazwa=?, od=?, do=?, platne=?, czas_na_zaplacenie=?, taryfaid=?"
+    "update" => "UPDATE harmonogram SET nazwa=?, od=?, do=?, platne=?, czas_na_zaplacenie=?, oplaty_miesieczne=? WHERE id=?",
+    "insert" => "INSERT INTO harmonogram SET nazwa=?, od=?, do=?, platne=?, czas_na_zaplacenie=?, oplaty_miesieczne=?"
   );
 
   function load_data($data, $action){
@@ -30,6 +30,23 @@ class Harmonogram extends Module{
     return $data;
   }
 
+  function validate(){
+    global $_POST;
+    global $_GET;
+
+    if(isset($_GET["action"]) && $_GET["action"]=="add_new"){
+      if(isset($_POST["nazwa"]) && $_POST["nazwa"] == ""){
+        $type="danger";
+        $message="Nazwa nie moze być pusta";
+        require("../views/alerts/alert.phtml");  
+        $this->h_create_form();
+        return false;
+      }
+    }
+
+    return true;
+  }
+
 
   function custom_handle(){
     global $_POST;
@@ -37,18 +54,39 @@ class Harmonogram extends Module{
     global $db;
 
     if(isset($_GET["action"]) && $_GET["action"]=="nalicz"){
+      // data naliczania
       $data = date_parse($_POST["evaldate"]);
-
-      $stmt = $db->prepare("SELECT harmonogram.id as id, taryfa.wartosc as wartosc, harmonogram.od as od, harmonogram.do as do FROM harmonogram left outer join taryfa on (taryfa.id = harmonogram.taryfaid) where harmonogram.od <= '".$_POST["evaldate"]."' and harmonogram.do >= '".$_POST["evaldate"]."'");
+      $data_Ym = date("Y-m", strtotime($_POST["evaldate"]));
+      // select aktywne harmonogramy 
+      $stmt = $db->prepare("SELECT 
+                              harmonogram.id as id, 
+                              harmonogram.od as od, 
+                              harmonogram.do as do,
+                              harmonogram.oplaty_miesieczne as oplaty_miesieczne
+                            FROM harmonogram 
+                            where 
+                              harmonogram.od <= '".$_POST["evaldate"]."' 
+                              and harmonogram.do >= '".$_POST["evaldate"]."'");
 
       $stmt->execute(array());
       $harmonograms = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
       $ilosc = 0;
+      // dla kazdego z nich 
       foreach($harmonograms as $h){
+        // ludzie nalezacy do tego harmonogramu
         $stmt = $db->prepare("SELECT * from person where harmonogramid=?");
         $stmt->execute(array($h["id"]));
         $all = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $oplaty = json_decode($h["oplaty_miesieczne"]);
+        $oplata_do_naliczenia = 0;
+        foreach($oplaty as $key=>$value){
+          if (date("Y-m", strtotime($value->sqld)) == $data_Ym){
+              $oplata_do_naliczenia = $value->value;
+              break;
+          }
+        }
+        //echo  $data_Ym."=".$oplata_do_naliczenia;
         foreach($all as $s){
           $numer_tr = "ZA ".$data["year"]."-".$data["month"]."-id-".$s["id"];
           $stmt = $db->prepare("SELECT * from platnosci where pid=? and nr_tr=?");
@@ -57,7 +95,7 @@ class Harmonogram extends Module{
           if(count($platnosci)==0){
             $stmt = $db->prepare("INSERT INTO platnosci SET pid=?, descr=?, nr_tr=?, amt=?, tdate=?");
             $nazwa_tr = "Oplata za ".$data["year"]."-".$data["month"];
-            $arr=array($s["id"],$nazwa_tr,$numer_tr,-$h["wartosc"], $_POST["evaldate"]);
+            $arr=array($s["id"],$nazwa_tr,$numer_tr,-$oplata_do_naliczenia, $_POST["evaldate"]);
             $stmt->execute($arr);
             $ilosc++;
           }else{
@@ -65,7 +103,12 @@ class Harmonogram extends Module{
         }
       }
 
-     if($ilosc==0){
+     if(count($harmonograms)==0){
+        $type="success";
+        $message="Żaden harmonogram nie obejmuje tej daty.";
+        require("../views/alerts/alert.phtml");
+     }
+     else if($ilosc==0){
         $type="success";
         $message="Obciążenia zostały już naliczone dla tego miesiąca.";
         require("../views/alerts/alert.phtml");

@@ -4,6 +4,41 @@
         Studenci/Osoby (<a href="?m=<?php echo $_GET["m"]; ?>&action=create_form">  
         <span class="glyphicon glyphicon-plus"></span> Dodaj </a>) </small></h4>
     <hr>
+
+    <div class="form-group">
+            <label>Grupa</label>
+            <select name="groupid" id="groupid" class="form-control" onchange="" >
+                <?php foreach($data["grupa"]["all"] as $row) { ?>
+                <option value="<?php echo $row["id"] ?>" 
+                    <?php if ($row["id"] == $data["grupa"]["active"]) echo "selected"; ?>
+                ><?php echo $row["name"] ?></option>
+                <?php } ?>
+            </select>
+    </div>
+
+    <script type="text/javascript">
+        function replaceUrlParam(url, paramName, paramValue)
+        {
+            if (paramValue == null) {
+                paramValue = '';
+            }
+            var pattern = new RegExp('\\b('+paramName+'=).*?(&|$)');
+            if (url.search(pattern)>=0) {
+                return url.replace(pattern,'$1' + paramValue + '$2');
+            }
+            url = url.replace(/\?$/,'');
+            return url + (url.indexOf('?')>0 ? '&' : '?') + paramName + '=' + paramValue;
+        }
+
+        $(function () {
+            $('#groupid').on('change', function(e){ 
+                var hrf = window.location.href;
+                window.location.href=(replaceUrlParam(hrf,"groupid",e.target.value));
+            })
+        });
+    </script>
+
+
     <table width="100%" class="table table-bordered table-hover" >
         <thead>
         <tr>

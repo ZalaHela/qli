@@ -18,12 +18,50 @@
         <div class="form-group">
             <label>Nazwa</label>
             <input class="form-control" placeholder="Enter text" name="nazwa" value="<?php get($data,"nazwa"); ?>" >
-        </div>    
+        </div>  
+      
+
+        <script>
+            function gen_range(){
+                var jsonstr = "<?php get_sl($data,"oplaty_miesieczne","");?>";
+                var jsonobj = null;
+                if(jsonstr.indexOf("{") >= 0) jsonobj = JSON.parse(jsonstr);
+                console.log("gen range");
+                var start = moment($('#od_date').val());
+                var stop = moment($('#do_date').val());
+                var t = start;
+                $('#oplaty_miesiecczne').empty();
+                id=0;
+                var arr = {}
+                if(jsonobj)arr=jsonobj;
+                while(t<=stop){
+                    id++;
+                    var mnth= t.format('MMM/YY');
+                    if(!arr['monthid-'+mnth]){
+                        arr['monthid-'+mnth] = {mth:mnth,sqld:t.format('YYYY-MM-DD'),id:'monthid-'+mnth, value:""};
+                    }
+                    $('#oplaty_miesiecczne').append('<label for="monthid-"'+mnth+'>' + mnth +'</label>');
+                    $('#oplaty_miesiecczne').append('<input class="form-control" id="monthid-'+mnth+'" placeholder="Cena" value="'+arr['monthid-'+mnth].value+'">');
+                    $("input[id*='monthid-"+mnth+"']").on('change', function(e){ 
+                        arr[event.target.id].value = $(this).val();
+                        $('#oplaty_miesieczne_json').val(JSON.stringify(arr));
+                    });
+                    t = t.add(1,'month');
+
+                }
+
+                $('#oplaty_miesieczne_json').val(JSON.stringify(arr));
+
+            }
+        </script>
+
+
+         
     
         <div class="form-group">
             <label>Obowiązuje Od</label>
             <div class='input-group date' id='datetimepicker1'>
-                <input type='text' class="form-control" name="od" value="<?php get($data,'od',date("Y-m-d H:i:s")); ?>" />
+                <input type='text' class="form-control" id="od_date" name="od" value="<?php get($data,'od',date("Y-m-d H:i:s")); ?>"/>
                 <span class="input-group-addon">
                     <span class="glyphicon glyphicon-calendar"></span>
                 </span>
@@ -32,6 +70,10 @@
                         $('#datetimepicker1').datetimepicker({
                          format: 'YYYY-MM-DD'
                         });
+
+                        $('#datetimepicker1').on('dp.change', function(e){ 
+                            gen_range();
+                        })
                     });
                 </script>
             </div>
@@ -41,7 +83,7 @@
          <div class="form-group">
             <label>Obowiązuje Do</label>
             <div class='input-group date' id='datetimepicker2'>
-                <input type='text' class="form-control" name="do" value="<?php get($data,'do'); ?>" />
+                <input type='text' class="form-control" name="do" id="do_date" value="<?php get($data,'do',date("Y-m-d H:i:s")); ?>" />
                 <span class="input-group-addon">
                     <span class="glyphicon glyphicon-calendar"></span>
                 </span>
@@ -50,6 +92,10 @@
                         $('#datetimepicker2').datetimepicker({
                          format: 'YYYY-MM-DD'
                         });
+
+                        $('#datetimepicker2').on('dp.change', function(e){ 
+                            gen_range();
+                        })
                     });
                 </script>
             </div>
@@ -57,26 +103,36 @@
       
         <div class="form-group">
             <label>Płatne Każdego Miesiąca W Dniu</label>
-            <input class="form-control" placeholder="Enter text" name="platne" value="<?php get($data,"platne"); ?>" >
+            <input class="form-control" placeholder="Enter text" name="platne" value="<?php get($data,"platne", "1"); ?>" >
         </div>    
         <div class="form-group">
             <label>Czas Na Zapłate</label>
-            <input class="form-control" placeholder="Enter text" name="czas_na_zaplacenie" value="<?php get($data,"czas_na_zaplacenie"); ?>" >
+            <input class="form-control" placeholder="Enter text" name="czas_na_zaplacenie" value="<?php get($data,"czas_na_zaplacenie","20"); ?>" >
         </div>    
         
-        <div class="form-group">
-            <label>Taryfa</label>
-            <select name="taryfaid" class="form-control">
-                <?php foreach($data["taryfa"]["all"] as $row) { ?>
-                <option value="<?php echo $row["id"] ?>" 
-                    <?php if ($row["id"] == $data["taryfa"]["active"]) echo "selected"; ?>
-                ><?php echo $row["nazwa"] ?></option>
-                <?php } ?>
-            </select>
-        </div>
-        
+        <div class="form-group" >
+            <label>Opłata miesięczna</label>
+            <!--<label for="stała">Stała</label>
+            <input class="form-control" id="stala_cena" placeholder="Stała cena">-->
+            <input type="hidden" class="form-control" id="oplaty_miesieczne_json" name="oplaty_miesieczne" placeholder="json" value="<?php echo htmlspecialchars($data["oplaty_miesieczne"]); ?>">
+            
+            <div id="oplaty_miesiecczne" style="padding-left:10px">
+            </div>
 
-      
+            <script type="text/javascript">
+               $(function () {
+                    $('#stala_cena').on('keypress', function(e){ 
+                        $("#oplaty_miesiecczne :input").each(function( index ) {
+                            $( this ).val($('#stala_cena').val()+String.fromCharCode(e.keyCode));
+                        });
+                    })
+                    gen_range();
+                }); 
+            </script>
+        </div>    
+
+        
+          
 
         <?php if(isset($data)) { ?>
         <button type="submit" class="btn btn-default">  

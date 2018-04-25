@@ -1,2 +1,4 @@
 alter table person add column dataurodzenia date;
 alter table timport add column phone text;
+alter table harmonogram drop COLUMN taryfaid;
+alter table harmonogram add column oplaty_miesieczne text;

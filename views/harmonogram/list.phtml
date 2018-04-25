@@ -38,7 +38,6 @@
         <th> <?php sorted_column("Nazwa", "nazwa"); ?> </th>
         <th> <?php sorted_column("Od", "od"); ?> </th>
         <th> <?php sorted_column("Do", "do"); ?> </th>
-        <th> <?php sorted_column("Taryfa", "taryfa"); ?> </th>
         <th>   </th>
 
         </tr>
@@ -51,7 +50,6 @@
             </td>
             <td><?php echo $row["od"]; ?></td>
             <td><?php echo $row["do"]; ?></td>
-            <td><?php echo $row["taryfa"]; ?></td>
             <td>
                 <a href="?m=studenci&harmonogramid=<?php echo $row["id"]; ?>">Lista Studentów</a>
             </td>

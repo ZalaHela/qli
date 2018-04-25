@@ -38,6 +38,16 @@ function get($data, $d, $val=""){
     else echo $val;
 }
 
+function get_sl($data, $d, $val=""){
+    if(isset($data[$d])) echo addslashes($data[$d]);
+    else echo $val;
+}
+
+function get_html($data, $d, $val=""){
+    if(isset($data[$d])) echo htmlspecialchars($data[$d]);
+    else echo $val;
+}
+
 function action(){
     global $_GET;
     if(isset($_GET["id"])) echo "update&id=".$_GET["id"];
@@ -71,7 +81,7 @@ class Module {
     }
     $query=$this->queries["list"].$orderby;
     //print_r($query);
-    $filt = $this->get_values($this->queries["list"], $_POST,  $_GET);
+    $filt = $this->get_values($this->queries["list"], $_POST,  $_GET, $_SESSION);
     $stmt = $db->prepare($query);
     $stmt->execute($filt);
     $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -94,8 +104,8 @@ class Module {
     else return null;
   }
 
-  function get_values($query, $post, $get){
-    $arr = array_merge($post,$get);
+  function get_values($query, $post, $get, $sess){
+    $arr = array_merge($post,$get,$sess);
     $matches="";
     preg_match_all('/\s*([^= ,]+)=\?\s*/', $query, $matches, PREG_SET_ORDER);
     $values = array();
@@ -109,12 +119,13 @@ class Module {
     global $db;
     global $_POST;
     global $_GET;
+    global $_SESSION;
 
     
     
     /* UPDATE */
     $stmt = $db->prepare($this->queries["update"]);
-    $ok = $stmt->execute($this->get_values($this->queries["update"], $_POST,  $_GET));
+    $ok = $stmt->execute($this->get_values($this->queries["update"], $_POST,  $_GET, $_SESSION));
     if($ok){
       $type="success";
       $message="Zmodyfikowano";
@@ -133,7 +144,7 @@ class Module {
     global $_GET;
 
     $stmt = $db->prepare($this->queries["insert"]);
-    $ok = $stmt->execute($this->get_values($this->queries["insert"], $_POST, $_GET));
+    $ok = $stmt->execute($this->get_values($this->queries["insert"], $_POST, $_GET, $_SESSION));
     //$stmt->debugDumpParams();
 
     if($ok){
@@ -198,9 +209,18 @@ class Module {
     return false;
   }
 
+  function validate(){
+    return true;
+  }
+
   function handle(){
     global $_POST;
     global $_GET;
+
+    if(!$this->validate()){
+      return;
+    }
+
     if(isset($_GET["action"]) && $_GET["action"]=="update"){
       $this->h_update();
     }
