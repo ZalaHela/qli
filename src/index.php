@@ -34,6 +34,9 @@ if(isset($_GET["m"]) && $_GET["m"] == "studenci"){
 	$taryfy->handle();
 }else if(isset($_GET["m"]) && $_GET["m"] == "harmonogram"){
 	$harmonogram->handle();
+}else{
+	$_GET["m"] = "studenci";
+	$studenci->handle();
 }
 
 

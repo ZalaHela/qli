@@ -25,7 +25,30 @@ class Studenci extends Module{
     "update" => "UPDATE person SET first=?, last=?, phone=?, groupid=?, odkiedy=?, harmonogramid=?, dataurodzenia=? WHERE id=?",
     "insert" => "INSERT INTO person SET first=?, last=?, phone=?, groupid=?, odkiedy=?, harmonogramid=?, dataurodzenia=?"
   );
- 
+
+  function validate(){
+    global $_POST;
+    global $_GET;
+    if(isset($_GET["action"]) && $_GET["action"]=="add_new"){
+      if(isset($_POST["last"]) && $_POST["last"] == ""){
+        print_error("Nazwisko nie moze być puste."); 
+        return false;
+      }
+
+      if(isset($_POST["first"]) && $_POST["first"] == ""){
+        print_error("Imię nie moze być puste."); 
+        return false;
+      }
+
+      if(isset($_POST["phone"]) && $_POST["phone"] == ""){
+        print_error("Musisz podać numer telefonu."); 
+        return false;
+      }
+    }
+
+    return true;
+  }
+   
   function load_data($data, $action){
     global $db;
     if($action == "create_form" || $action == "edit" ){
@@ -56,6 +79,14 @@ class Studenci extends Module{
       );
 
       if(isset($_GET["harmonogramid"])){
+        $stmt = $db->prepare("SELECT * FROM harmonogram WHERE id=?");
+        $stmt->execute(array($_GET["harmonogramid"]));
+        $r = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        if(count($r)>0){ 
+          $data["harmonogram"] = $r[0]["nazwa"];
+        } else { 
+          $data["harmonogram"] = "";
+        }
         $this->queries["list"] = $this->queries["list_common"].$this->queries["list_by_harmonogram"];
       }else{
         $this->queries["list"] = $this->queries["list_common"].$this->queries["list_all"];
@@ -65,6 +96,9 @@ class Studenci extends Module{
   }
 
 };
+
+
+
 
 ?>
 

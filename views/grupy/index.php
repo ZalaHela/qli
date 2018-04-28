@@ -23,10 +23,7 @@ class Grupy extends Module{
 
     if(isset($_GET["action"]) && $_GET["action"]=="add_new"){
       if(isset($_POST["name"]) && $_POST["name"] == ""){
-        $type="danger";
-        $message="Nazwa nie moze być pusta";
-        require("../views/alerts/alert.phtml");  
-        $this->h_create_form();
+        print_error("Nazwa nie moze być pusta");
         return false;
       }
     }

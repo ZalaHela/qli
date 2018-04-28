@@ -54,6 +54,18 @@ function action(){
     else echo "add_new";
 }
 
+function print_error($msg){
+  $type="danger";
+  $message=$msg;
+  require("../views/alerts/alert.phtml");  
+}
+
+function print_success($msg){
+  $type="success";
+  $message=$msg;
+  require("../views/alerts/alert.phtml");  
+}
+
 class Module {
 
   public $templates = array(
@@ -171,11 +183,12 @@ class Module {
     require($this->templates["single"]);
   }
 
-
-  function h_edit(){
+  function h_edit($d=null){
     global $_POST;
     global $_GET;
-    $data=$this->get_by_id($_GET["id"]);
+    $data=null;
+    if(isset($d)) $data = $d;
+    else if(isset($_GET["id"]))$data=$this->get_by_id($_GET["id"]);
     $data=$this->load_data($data, "edit");
     require($this->templates["single"]);
   }
@@ -217,14 +230,15 @@ class Module {
     global $_POST;
     global $_GET;
 
-    if(!$this->validate()){
-      return;
-    }
 
     if(isset($_GET["action"]) && $_GET["action"]=="update"){
       $this->h_update();
     }
     else if(isset($_GET["action"]) && $_GET["action"]=="add_new"){
+      if(!$this->validate()){
+        $this->h_edit($_POST);
+        return;
+      }
       $this->h_add_new();
     }
     else if(isset($_GET["action"]) && $_GET["action"]=="create_form"){

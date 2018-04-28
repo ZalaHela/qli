@@ -5,6 +5,7 @@
         <span class="glyphicon glyphicon-plus"></span> Dodaj </a>) </small></h4>
     <hr>
 
+    <?php if(!isset($_GET["harmonogramid"])){ ?>
     <div class="form-group">
             <label>Grupa</label>
             <select name="groupid" id="groupid" class="form-control" onchange="" >
@@ -15,6 +16,11 @@
                 <?php } ?>
             </select>
     </div>
+    <?php } else { ?>
+    <div class="form-group">
+            <label>Studenci przypisani do harmonogramu "<?php echo $data["harmonogram"]; ?>" </label>
+    </div>
+    <?php }  ?>
 
     <script type="text/javascript">
         function replaceUrlParam(url, paramName, paramValue)

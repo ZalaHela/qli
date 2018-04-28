@@ -36,10 +36,7 @@ class Harmonogram extends Module{
 
     if(isset($_GET["action"]) && $_GET["action"]=="add_new"){
       if(isset($_POST["nazwa"]) && $_POST["nazwa"] == ""){
-        $type="danger";
-        $message="Nazwa nie moze być pusta";
-        require("../views/alerts/alert.phtml");  
-        $this->h_create_form();
+        print_error("Nazwa nie moze być pusta"); 
         return false;
       }
     }
@@ -55,8 +52,9 @@ class Harmonogram extends Module{
 
     if(isset($_GET["action"]) && $_GET["action"]=="nalicz"){
       // data naliczania
-      $data = date_parse($_POST["evaldate"]);
-      $data_Ym = date("Y-m", strtotime($_POST["evaldate"]));
+      $data_evaluacji = $_POST["evaldate"]."-01";
+      $data = date_parse($data_evaluacji);
+      $data_Ym = date("Y-m", strtotime($data_evaluacji));
       // select aktywne harmonogramy 
       $stmt = $db->prepare("SELECT 
                               harmonogram.id as id, 
@@ -65,8 +63,8 @@ class Harmonogram extends Module{
                               harmonogram.oplaty_miesieczne as oplaty_miesieczne
                             FROM harmonogram 
                             where 
-                              harmonogram.od <= '".$_POST["evaldate"]."' 
-                              and harmonogram.do >= '".$_POST["evaldate"]."'");
+                              harmonogram.od <= '".$data_evaluacji."' 
+                              and harmonogram.do >= '".$data_evaluacji."'");
 
       $stmt->execute(array());
       $harmonograms = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -95,7 +93,7 @@ class Harmonogram extends Module{
           if(count($platnosci)==0){
             $stmt = $db->prepare("INSERT INTO platnosci SET pid=?, descr=?, nr_tr=?, amt=?, tdate=?");
             $nazwa_tr = "Oplata za ".$data["year"]."-".$data["month"];
-            $arr=array($s["id"],$nazwa_tr,$numer_tr,-$oplata_do_naliczenia, $_POST["evaldate"]);
+            $arr=array($s["id"],$nazwa_tr,$numer_tr,-$oplata_do_naliczenia, $data_evaluacji);
             $stmt->execute($arr);
             $ilosc++;
           }else{
