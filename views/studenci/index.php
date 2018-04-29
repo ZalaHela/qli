@@ -44,6 +44,11 @@ class Studenci extends Module{
         print_error("Musisz podać numer telefonu."); 
         return false;
       }
+
+      if(!isset($_POST["groupid"]) || $_POST["groupid"] == ""){
+        print_error("Student musi przynależeć do jakieś grupy."); 
+        return false;
+      }
     }
 
     return true;
