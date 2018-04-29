@@ -1,0 +1,29 @@
+<div class="col-sm-9">
+    <h4><small>
+        <span class="glyphicon glyphicon-book"></span>  
+        Historia transakcji </small></h4>
+    <hr>
+
+    <table width="100%" class="table table-bordered table-hover" >
+        <thead>
+        <tr>
+        <th>Opis</th>
+        <th> <?php sorted_column("Wartość", "amt"); ?> </th>
+        <th> <?php sorted_column("Data Wystawienia", "tdate"); ?> </th>
+        <th> <?php sorted_column("Nazwisko Imię", "person"); ?> </th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php foreach($data["table"] as $row){ ?>
+        <tr onclick="window.location.href='?m=<?php echo $_GET["m"]; ?>&action=edit&id=<?php echo $row["id"]; ?>&pid=<?php echo $row["pid"]?>'" >
+            <td><?php echo $row["descr"]; ?></td>
+            <td><?php echo $row["amt"]; ?></td>
+            <td><?php echo $row["tdate"]; ?></td>
+            <td><?php echo $row["person"]; ?></td>
+        </tr>
+        <?php } ?>
+        </tbody>
+    </table>
+</div>
+
+ 
