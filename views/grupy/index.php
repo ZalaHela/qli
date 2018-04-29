@@ -10,7 +10,7 @@ class Grupy extends Module{
   );
 
   public $queries = array(
-    "list" => "SELECT * FROM groupa order by name",
+    "list" => "SELECT * FROM groupa ORDER BY id",
     "delete" => "DELETE FROM groupa WHERE id=?",
     "single" => "SELECT * FROM groupa WHERE id=?",
     "update" => "UPDATE groupa SET name=?, descr=? WHERE id=?",

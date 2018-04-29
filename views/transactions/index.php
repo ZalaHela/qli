@@ -10,6 +10,7 @@ class Transactions extends Module{
   );
 
   public $queries = array(
+    "count" => "SELECT count(*) count FROM platnosci", 
     "list" => "SELECT platnosci.id as id, platnosci.descr as descr, platnosci.amt as amt, platnosci.tdate as tdate,
                       CONCAT(person.last,' ',person.first) as person, person.id as pid
                FROM platnosci 
@@ -34,6 +35,43 @@ class Transactions extends Module{
     }
 
     return true;
+  }
+ 
+  function xcustom_handle(){
+    global $_POST;
+    global $_GET;
+    global $db;
+
+    if(isset($_GET["action"]) && $_GET["action"]=="list"){
+     
+      $data = array();
+      if(isset($this->queries["count"])){
+        $stmt = $db->prepare($this->queries["count"]);
+        $stmt->execute();
+        $countres = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $total = $countres[0]["count"];
+
+        $data["pagination"] = null;
+        $maxperpage=5;
+        if( $total > $maxperpage ) {
+          $data["pagination"]=array();
+          $data["pagination"]["count"]=ceil($total/$maxperpage);
+          $data["pagination"]["size"] = $maxperpage;
+          $data["pagination"]["active"] = isset($_GET["page"])?($_GET["page"]):0;
+          $this->queries["list"] .= " LIMIT ".$maxperpage." OFFSET ". ($data["pagination"]["active"]*$maxperpage);
+        }
+      }
+
+      $stmt = $db->prepare($this->queries["list"]);
+      $stmt->execute();
+      $tab = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+      $data["table"] = $tab;
+      require($this->templates["list"]);
+      return true;
+    }
+
+    return false;
   }
 
 };

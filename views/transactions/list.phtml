@@ -4,10 +4,14 @@
         Historia transakcji </small></h4>
     <hr>
 
+    <?php 
+    paginator($data);
+    ?>
+
     <table width="100%" class="table table-bordered table-hover" >
         <thead>
         <tr>
-        <th>Opis</th>
+        <th><?php sorted_column("Opis", "descr"); ?></th>
         <th> <?php sorted_column("Wartość", "amt"); ?> </th>
         <th> <?php sorted_column("Data Wystawienia", "tdate"); ?> </th>
         <th> <?php sorted_column("Nazwisko Imię", "person"); ?> </th>

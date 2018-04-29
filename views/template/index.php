@@ -8,6 +8,27 @@ function serialise($arr){
   return join("&",$x);
 }
 
+function paginator($data){
+    global $_GET;
+    $gcpy = $_GET;
+    unset($gcpy["page"]);
+    $url=serialise($gcpy);
+
+    if( isset($data["pagination"]) )
+    {
+      echo '<nav aria-label="Page navigation example">';
+      echo '<ul class="pagination">';
+      for($i = 0; $i < $data["pagination"]["count"]; $i++)
+      {
+        echo '<li class="page-item'.($i==$data["pagination"]["active"]?" active":"").'" >';
+        echo '<a class="page-link" href="?'.$url.'&page='. $i.'">'.($i+1).'</a></li>';
+      }
+      echo '</ul>';
+      echo '</nav>';
+    }
+
+}
+
 function sorted_column($colname, $vname){
   global $_GET;
   // wez kopie
@@ -67,6 +88,7 @@ function print_success($msg){
 }
 
 class Module {
+  public $items_per_page = 10;
 
   public $templates = array(
     "single"=>"../views/template/single.phtml",
@@ -81,7 +103,7 @@ class Module {
     "insert" => "INSERT INTO groupa SET name=?, descr=?"
   );
 
-  function get_all(){
+  function get_all($data){
     global $db;
     global $_POST;
     global $_GET;
@@ -90,13 +112,20 @@ class Module {
       $orderfld = $_GET["orderby"];
       $orderby = " ORDER BY ".$orderfld." ";
       if(isset($_GET["DESC"])) $orderby = $orderby." DESC";
+      $orbypos = strrpos($this->queries["list"],"ORDER");
+      // just in case remove old order by
+      if($orbypos>0){
+        $this->queries["list"] = substr($this->queries["list"], 0, $orbypos);
+      }
     }
-    $query=$this->queries["list"].$orderby;
-    //print_r($query);
+    $this->queries["list"].=$orderby;
+    $exdata = $this->prep_pagination(array(), "list");
+    //print_r($this->queries["list"]);
     $filt = $this->get_values($this->queries["list"], $_POST,  $_GET, $_SESSION);
-    $stmt = $db->prepare($query);
+    $stmt = $db->prepare($this->queries["list"]);
     $stmt->execute($filt);
-    $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $data["table"] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $data = array_merge($exdata, $data);
     return $data;
   }
 
@@ -117,7 +146,12 @@ class Module {
   }
 
   function get_values($query, $post, $get, $sess){
-    $arr = array_merge($post,$get,$sess);
+    if($sess){
+      $arr = array_merge($post,$get,$sess);
+    }
+    else{
+      $arr = array_merge($post,$get);
+    }
     $matches="";
     preg_match_all('/\s*([^= ,]+)=\?\s*/', $query, $matches, PREG_SET_ORDER);
     $values = array();
@@ -137,7 +171,7 @@ class Module {
     
     /* UPDATE */
     $stmt = $db->prepare($this->queries["update"]);
-    $ok = $stmt->execute($this->get_values($this->queries["update"], $_POST,  $_GET, $_SESSION));
+    $ok = $stmt->execute($this->get_values($this->queries["update"], $_POST,  $_GET, null));
     if($ok){
       $type="success";
       $message="Zmodyfikowano";
@@ -156,7 +190,7 @@ class Module {
     global $_GET;
 
     $stmt = $db->prepare($this->queries["insert"]);
-    $ok = $stmt->execute($this->get_values($this->queries["insert"], $_POST, $_GET, $_SESSION));
+    $ok = $stmt->execute($this->get_values($this->queries["insert"], $_POST, $_GET, null));
     //$stmt->debugDumpParams();
 
     if($ok){
@@ -209,10 +243,31 @@ class Module {
     }
   }
 
+  function prep_pagination($data, $query_name){
+    global $db;
+    if(isset($this->queries["count"])){
+      $stmt = $db->prepare($this->queries["count"]);
+      $stmt->execute();
+      $countres = $stmt->fetchAll(PDO::FETCH_ASSOC);
+      $total = $countres[0]["count"];
+
+      $data["pagination"] = null;
+      $maxperpage=$this->items_per_page;
+      if( $total > $maxperpage ) {
+        $data["pagination"]=array();
+        $data["pagination"]["count"]=ceil($total/$maxperpage);
+        $data["pagination"]["size"] = $maxperpage;
+        $data["pagination"]["active"] = isset($_GET["page"])?($_GET["page"]):0;
+        $this->queries[$query_name] .= " LIMIT ".$maxperpage." OFFSET ". ($data["pagination"]["active"]*$maxperpage);
+      }
+    }
+    return $data;
+  }
+
   function h_list(){
     $data = array();
     $data = $this->load_data($data, "list");
-    $data["table"] = $this->get_all();
+    $data = $this->get_all($data);
     require($this->templates["list"]);
   } 
 
