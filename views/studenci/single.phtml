@@ -63,13 +63,12 @@
             </div>
         </div>
         <div class="form-group">
-            <label>Konto</label>
+            <label>Grupa</label>
             <select name="groupid" class="form-control">
                 <?php foreach($data["grupa"]["all"] as $row) { ?>
                 <option value="<?php echo $row["id"] ?>" 
                     <?php 
                         if ($row["id"] == $data["grupa"]["active"]) echo "selected"; 
-                        if (isset($_SESSION["groupid"]) && $row["id"] == $_SESSION["groupid"]) echo "selected"; 
                     ?>
                 ><?php echo $row["name"] ?></option>
                 <?php } ?>

@@ -39,7 +39,9 @@
         $(function () {
             $('#groupid').on('change', function(e){ 
                 var hrf = window.location.href;
-                window.location.href=(replaceUrlParam(hrf,"groupid",e.target.value));
+                hrf=replaceUrlParam(hrf,"groupid",e.target.value)
+                hrf=replaceUrlParam(hrf,"action","list")
+                window.location.href=hrf;
             })
         });
     </script>

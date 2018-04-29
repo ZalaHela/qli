@@ -232,6 +232,10 @@ class Module {
 
 
     if(isset($_GET["action"]) && $_GET["action"]=="update"){
+      if(!$this->validate()){
+        $this->h_edit($_POST);
+        return;
+      }
       $this->h_update();
     }
     else if(isset($_GET["action"]) && $_GET["action"]=="add_new"){

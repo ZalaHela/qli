@@ -10,7 +10,13 @@ class Import extends Module{
   );
 
   public $queries = array(
-    "list" => "SELECT timport.id as id, timport.data, timport.tytul, timport.kwota, CONCAT(person.last,' ',person.first,' (',person.phone,')') as osoba, timport.phone as phone, person.id as personid FROM timport left outer join person on (person.phone = timport.phone)",
+    "list" => "SELECT timport.id as id, timport.data, timport.tytul, timport.kwota, 
+            CONCAT(person.last,' ',person.first,' (',person.phone,')') as osoba, 
+            timport.phone as phone, person.id as personid,
+            groupa.name as grupa 
+            FROM timport left outer join person on (person.phone = timport.phone)
+            left outer join groupa on (groupa.id = timport.groupid) 
+      where person.groupid = timport.groupid OR person.groupid is null",
     "single" => "SELECT * FROM timport WHERE id=?",
     "delete" => "DELETE FROM timport WHERE id=?",
     "update" => "UPDATE timport SET tytul=?, data=?, kwota=?, personid=? WHERE id=?",
@@ -78,8 +84,8 @@ class Import extends Module{
                     if(count($person) > 0) $personid = $person[0]["id"];
                   }
                   
-                  $stmt = $db->prepare("INSERT INTO timport SET nr_transakcji=?, data=?, kontrahent=?, tytul=?, nr_rachunku=?, kwota=?, personid=?, importdetails=?, phone=?");
-                  $stmt->execute(array($row[7]." ".$row[0], $row[0], $row[2], $row[3], $row[4], $row[8], $personid, NULL, $phone));
+                  $stmt = $db->prepare("INSERT INTO timport SET nr_transakcji=?, data=?, kontrahent=?, tytul=?, nr_rachunku=?, kwota=?, personid=?, importdetails=?, phone=?, groupid=?");
+                  $stmt->execute(array($row[7]." ".$row[0], $row[0], $row[2], $row[3], $row[4], $row[8], $personid, NULL, $phone, $_POST["groupid"]));
                   array_push($csv, $row);
                 }catch(Exception $e){
 
@@ -130,8 +136,8 @@ class Import extends Module{
         $val = $imp[0];
 
         // get person by phone
-        $stmt = $db->prepare("SELECT * from person where phone=?");
-        $stmt->execute(array($val["phone"]));
+        $stmt = $db->prepare("SELECT * from person where phone=? and groupid=?");
+        $stmt->execute(array($val["phone"],$val["groupid"]));
         $person = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         try{
@@ -173,14 +179,25 @@ class Import extends Module{
   function load_data($data, $action){
     global $db;
     if($action == "create_form" || $action == "edit" ){
-      $stmt = $db->prepare("SELECT id, CONCAT(last,' ',first, ' (', phone ,')') as name FROM person order by last");
+      $stmt = $db->prepare("SELECT id, 
+                            CONCAT(last,' ',first, ' (', phone ,')') as name,
+                            phone 
+                            FROM person order by last");
       $stmt->execute(array());
       $data["person"] = array(
         "all" => $stmt->fetchAll(PDO::FETCH_ASSOC),
-        "active" => isset($data["personid"])?$data["personid"]:NULL
+        "active" => isset($data["phone"])?$data["phone"]:NULL
       );
 
-    } 
+    } else if($action == "list" ){
+      $stmt = $db->prepare("SELECT * FROM groupa order by name");
+      $stmt->execute(array());
+      $data["grupa"] = array(
+        "all" => $stmt->fetchAll(PDO::FETCH_ASSOC),
+        "active" => isset($_SESSION["groupid"])?$_SESSION["groupid"]:NULL
+      );
+    }
+
 
     return $data;
   }

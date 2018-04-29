@@ -34,8 +34,8 @@ class Harmonogram extends Module{
     global $_POST;
     global $_GET;
 
-    if(isset($_GET["action"]) && $_GET["action"]=="add_new"){
-      if(isset($_POST["nazwa"]) && $_POST["nazwa"] == ""){
+   if(isset($_GET["action"]) && ( $_GET["action"]=="add_new" || $_GET["action"]=="update") ){
+      if(!isset($_POST["nazwa"]) || $_POST["nazwa"] == ""){
         print_error("Nazwa nie moze być pusta"); 
         return false;
       }

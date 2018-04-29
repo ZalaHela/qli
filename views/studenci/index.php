@@ -29,18 +29,18 @@ class Studenci extends Module{
   function validate(){
     global $_POST;
     global $_GET;
-    if(isset($_GET["action"]) && $_GET["action"]=="add_new"){
-      if(isset($_POST["last"]) && $_POST["last"] == ""){
+    if(isset($_GET["action"]) && ($_GET["action"]=="add_new" ||  $_GET["action"]=="update")){
+      if(!isset($_POST["last"]) || $_POST["last"] == ""){
         print_error("Nazwisko nie moze być puste."); 
         return false;
       }
 
-      if(isset($_POST["first"]) && $_POST["first"] == ""){
+      if(!isset($_POST["first"]) || $_POST["first"] == ""){
         print_error("Imię nie moze być puste."); 
         return false;
       }
 
-      if(isset($_POST["phone"]) && $_POST["phone"] == ""){
+      if(!isset($_POST["phone"]) || $_POST["phone"] == ""){
         print_error("Musisz podać numer telefonu."); 
         return false;
       }

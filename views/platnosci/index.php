@@ -17,7 +17,7 @@ class Payments extends Module{
          (CASE WHEN (now() > date_add(tdate, interval (20-1) day)) THEN 'TAK' ELSE 'NIE' END) 
         ELSE 'N/A'
       END) as przedawnienie 
-      FROM platnosci where pid=?",
+      FROM platnosci where pid=? order by platnosci.id desc",
     "delete" => "DELETE FROM platnosci WHERE id=?",
     "single" => "SELECT * FROM platnosci WHERE id=?",
     "update" => "UPDATE platnosci SET descr=?, tdate=?, amt=?, pid=? WHERE id=?",

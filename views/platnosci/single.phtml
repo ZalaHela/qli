@@ -21,10 +21,23 @@
         </div>
 
         <div class="form-group">
-            <label>Data</label>
-            <input class="form-control" placeholder="Enter text" name="tdate" value="<?php get($data,"tdate", date("Y-m-d H:i:s")); ?>" >
+            <label>Data wystawienia</label>
+            <div class='input-group date' id='datetimepicker1'>
+                <input type='text' class="form-control" name="tdate" value="<?php get($data,'tdate', date("Y-m-d H:i:s")); ?>" />
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+                <script type="text/javascript">
+                    $(function () {
+                        $('#datetimepicker1').datetimepicker({
+                         format: 'YYYY-MM-DD'
+                        });
+                    });
+                </script>
+            </div>
         </div>
 
+        
         <div class="form-group">
             <label>Wartość</label>
             <input class="form-control" placeholder="Enter text" name="amt" value="<?php get($data,"amt"); ?>" >

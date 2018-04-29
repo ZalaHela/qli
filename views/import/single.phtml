@@ -35,7 +35,7 @@
             <select name="personid" class="form-control">
                 <?php foreach($data["person"]["all"] as $row) { ?>
                 <option value="<?php echo $row["id"] ?>" 
-                    <?php if ($row["id"] == $data["person"]["active"]) echo "selected"; ?>
+                    <?php if ($row["phone"] == $data["person"]["active"]) echo "selected"; ?>
                 ><?php echo $row["name"] ?></option>
                 <?php } ?>
             </select>

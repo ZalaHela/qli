@@ -13,6 +13,7 @@ require("../views/platnosci/index.php");
 require("../views/import/index.php");
 require("../views/taryfy/index.php");
 require("../views/harmonogram/index.php");
+require("../views/transactions/index.php");
 
 
 $studenci = new Studenci(); 
@@ -21,6 +22,7 @@ $platnosci = new Payments();
 $import = new Import();
 $taryfy = new Taryfa();
 $harmonogram = new Harmonogram();
+$transactions = new Transactions();
 
 if(isset($_GET["m"]) && $_GET["m"] == "studenci"){
 	$studenci->handle();
@@ -34,6 +36,8 @@ if(isset($_GET["m"]) && $_GET["m"] == "studenci"){
 	$taryfy->handle();
 }else if(isset($_GET["m"]) && $_GET["m"] == "harmonogram"){
 	$harmonogram->handle();
+}else if(isset($_GET["m"]) && $_GET["m"] == "transactions"){
+	$transactions->handle();
 }else{
 	$_GET["m"] = "studenci";
 	$studenci->handle();

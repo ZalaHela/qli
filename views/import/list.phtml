@@ -1,12 +1,26 @@
 <div class="col-sm-9">
     <h4><small>
-        <span class="glyphicon glyphicon-user"></span>  
+        <span class="glyphicon glyphicon-cloud-upload"></span>  
         Import (<a href="?m=<?php echo $_GET["m"]; ?>&action=create_form">  
         <span class="glyphicon glyphicon-plus"></span> Dodaj </a>) </small></h4>
     <hr>
 
+
+
     <form role="form" method="post" 
         action="?m=<?php echo $_GET["m"]; ?>&action=upload" enctype="multipart/form-data">   
+
+        <div class="form-group">
+            <label>Grupa</label>
+            <select name="groupid" id="groupid" class="form-control">
+                <?php foreach($data["grupa"]["all"] as $row) { ?>
+                <option value="<?php echo $row["id"] ?>" 
+                    <?php if ($row["id"] == $data["grupa"]["active"]) echo "selected"; ?>
+                ><?php echo $row["name"] ?></option>
+                <?php } ?>
+            </select>
+        </div>
+
         <div class="form-group">
         <label>Wybierz plik CSV</label>
         <input type="file" class="form-control" placeholder="Enter text" name="fileToUpload" value="">
@@ -19,7 +33,7 @@
 
     <hr/>
     <h4><small>
-        Transkacje do zaakceptowania </small></h4>
+        Transkacje do zaakceptowania</small></h4>
 
     <table width="100%" class="table table-bordered table-hover" >
         <thead>
@@ -30,6 +44,7 @@
         <th> <?php sorted_column("Kwota", "kwota"); ?> </th>
         <th> <?php sorted_column("Osoba", "osoba"); ?> </th>
         <th> <?php sorted_column("Telefon", "phone"); ?> </th>
+        <th> <?php sorted_column("Grupa", "grupa"); ?> </th>
         <th> Akcja </th>
     
         </tr>
@@ -37,17 +52,18 @@
         <tbody>
         <?php foreach($data["table"] as $row){ ?>
         <tr>
-            <td><?php echo $row["data"]; ?></td>
+            <td style="white-space: nowrap;"><?php echo $row["data"]; ?></td>
             <td><?php echo $row["tytul"]; ?></td>
             <td><?php echo $row["kwota"]; ?></td>
             <td><?php echo $row["osoba"]; ?></td>
             <td><?php echo $row["phone"]; ?></td>
+            <td><?php echo $row["grupa"]; ?></td>
             
             <td> 
                 <a href="?m=<?php echo $_GET["m"]; ?>&action=edit&id=<?php echo $row["id"]; ?>">Edytuj</a> 
-                | 
+                <br> 
                 <a href="?m=<?php echo $_GET["m"]; ?>&action=accept&id=<?php echo $row["id"]; ?>">Zatwierdź</a> 
-                | 
+                <br>
                 <a href="?m=<?php echo $_GET["m"]; ?>&action=remove&id=<?php echo $row["id"]; ?>">Usuń</a> 
                 <br> 
                 
