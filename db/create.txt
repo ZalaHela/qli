@@ -30,6 +30,7 @@ CREATE TABLE IF NOT EXISTS `person` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
 
+
 CREATE TABLE IF NOT EXISTS `platnosci` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nr_tr` varchar(64) DEFAULT NULL,
@@ -40,6 +41,9 @@ CREATE TABLE IF NOT EXISTS `platnosci` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `nr_tr` (`nr_tr`)
 ) ENGINE=InnoDB;
+
+alter table platnosci add foreign key(pid) references person(id) on delete cascade;
+
 
 CREATE TABLE IF NOT EXISTS `taryfa` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
