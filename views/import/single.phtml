@@ -31,6 +31,11 @@
         </div>
         
         <div class="form-group">
+            <label>Numer Bankowy Transkacji</label>
+            <input class="form-control" placeholder="Enter text" name="nr_transakcji" value="<?php get($data,"nr_transakcji"); ?>" >
+        </div>
+
+        <div class="form-group">
             <label>Osoba</label>
             <select name="personid" class="form-control">
                 <?php foreach($data["person"]["all"] as $row) { ?>

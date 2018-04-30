@@ -13,13 +13,14 @@ class Import extends Module{
     "list" => "SELECT timport.id as id, timport.data, timport.tytul, timport.kwota, 
             CONCAT(person.last,' ',person.first,' (',person.phone,')') as osoba, 
             timport.phone as phone, person.id as personid,
+            timport.nr_transakcji as nr_transakcji,
             groupa.name as grupa 
             FROM timport left outer join person on (person.phone = timport.phone and person.groupid = timport.groupid)
             left outer join groupa on (groupa.id = timport.groupid) 
       ",//where person.groupid = timport.groupid OR person.groupid is null",
     "single" => "SELECT * FROM timport WHERE id=?",
     "delete" => "DELETE FROM timport WHERE id=?",
-    "update" => "UPDATE timport SET tytul=?, data=?, kwota=?, personid=? WHERE id=?",
+    "update" => "UPDATE timport SET tytul=?, data=?, kwota=?, personid=?, nr_transakcji=? WHERE id=?",
     "insert" => "INSERT INTO timport SET first=?, last=?, phone=?, groupid=?"
   );
 
