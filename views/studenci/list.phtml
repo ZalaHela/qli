@@ -9,6 +9,9 @@
     <div class="form-group">
             <label>Grupa</label>
             <select name="groupid" id="groupid" class="form-control" onchange="" >
+                <option value="any"> 
+                   Wszyscy</option>
+
                 <?php foreach($data["grupa"]["all"] as $row) { ?>
                 <option value="<?php echo $row["id"] ?>" 
                     <?php if ($row["id"] == $data["grupa"]["active"]) echo "selected"; ?>

@@ -17,8 +17,9 @@ class Studenci extends Module{
                           THEN 0 ELSE platnosci.amt END) as zaleglosc, 
                         date(dataurodzenia) as dataurodzenia 
                       FROM person 
-                        left outer join platnosci ON (platnosci.pid = person.id)",
-    "list_all" => "WHERE groupid=? GROUP by person.id",
+                        left outer join platnosci ON (platnosci.pid = person.id) ",
+    "list_by_group" => "WHERE groupid=? GROUP by person.id",
+    "list_all" => "GROUP by person.id",
     "list_by_harmonogram" => "WHERE harmonogramid=? GROUP by person.id ",
     "delete" => "DELETE FROM person WHERE id=?",
     "single" => "SELECT * FROM person WHERE id=?",
@@ -75,7 +76,6 @@ class Studenci extends Module{
         $_SESSION["groupid"] = $_GET["groupid"];
       }
 
-
       $stmt = $db->prepare("SELECT * FROM groupa order by name");
       $stmt->execute(array());
       $data["grupa"] = array(
@@ -93,8 +93,10 @@ class Studenci extends Module{
           $data["harmonogram"] = "";
         }
         $this->queries["list"] = $this->queries["list_common"].$this->queries["list_by_harmonogram"];
-      }else{
+      }if($_SESSION["groupid"]=="any"){
         $this->queries["list"] = $this->queries["list_common"].$this->queries["list_all"];
+      }else{
+        $this->queries["list"] = $this->queries["list_common"].$this->queries["list_by_group"];
       }
     }
     return $data;
