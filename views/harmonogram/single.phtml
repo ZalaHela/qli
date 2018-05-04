@@ -22,17 +22,25 @@
       
 
         <script>
+            // globalna tablica dla 
+            var arr = {};
+
             function gen_range(){
+                // tekst z bazy
                 var jsonstr = "<?php get_sl($data,"oplaty_miesieczne","");?>";
                 var jsonobj = null;
+                // slaba walidacja czy to json i go czytam
                 if(jsonstr.indexOf("{") >= 0) jsonobj = JSON.parse(jsonstr);
                 console.log("gen range");
+                // biore zakres dat z fomularza html
                 var start = moment($('#od_date').val());
                 var stop = moment($('#do_date').val());
                 var t = start;
+                // czyscze zawartosc formularza
                 $('#oplaty_miesiecczne').empty();
                 id=0;
-                var arr = {}
+                
+                // jak z BD dostalem json'a to biore go do tablicy arr
                 if(jsonobj)arr=jsonobj;
                 while(t<=stop){
                     id++;
@@ -112,8 +120,8 @@
         
         <div class="form-group" >
             <label>Opłata miesięczna</label>
-            <!--<label for="stała">Stała</label>
-            <input class="form-control" id="stala_cena" placeholder="Stała cena">-->
+            
+            <input class="form-control" id="stala_cena" placeholder="Stała cena cena dla wszystkich miesiecy">
             <input type="hidden" class="form-control" id="oplaty_miesieczne_json" name="oplaty_miesieczne" placeholder="json" value="<?php echo htmlspecialchars($data["oplaty_miesieczne"]); ?>">
             
             <div id="oplaty_miesiecczne" style="padding-left:10px">

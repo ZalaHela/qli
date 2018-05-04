@@ -93,7 +93,7 @@ class Studenci extends Module{
           $data["harmonogram"] = "";
         }
         $this->queries["list"] = $this->queries["list_common"].$this->queries["list_by_harmonogram"];
-      }if($_SESSION["groupid"]=="any"){
+      }else if($_SESSION["groupid"]=="any"){
         $this->queries["list"] = $this->queries["list_common"].$this->queries["list_all"];
       }else{
         $this->queries["list"] = $this->queries["list_common"].$this->queries["list_by_group"];
