@@ -128,10 +128,15 @@
             </div>
 
             <script type="text/javascript">
+               // Stala cena dla wszystkich miesiecy 
                $(function () {
                     $('#stala_cena').on('keypress', function(e){ 
                         $("#oplaty_miesiecczne :input").each(function( index ) {
-                            $( this ).val($('#stala_cena').val()+String.fromCharCode(e.keyCode));
+                            var cena = $('#stala_cena').val()+String.fromCharCode(e.keyCode);
+                            $( this ).val(cena);
+                            // update obiektu i serializacja
+                            arr[this.id].value = cena;
+                            $('#oplaty_miesieczne_json').val(JSON.stringify(arr));
                         });
                     })
                     gen_range();

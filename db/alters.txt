@@ -5,6 +5,7 @@ alter table harmonogram add column oplaty_miesieczne text;
 alter table timport add column groupid int;
 ALTER TABLE `person` CHANGE `last` `last` TEXT CHARACTER SET utf8 COLLATE utf8_polish_ci NULL DEFAULT NULL;
 ALTER TABLE `timport` CHANGE `tytul` `tytul` TEXT CHARACTER SET utf8 COLLATE utf8_polish_ci NULL DEFAULT NULL;
+ALTER TABLE `harmonogram` CHANGE `oplaty_miesieczne` `oplaty_miesieczne` TEXT CHARACTER SET utf8 COLLATE utf8_polish_ci NULL DEFAULT NULL;
 
 
 alter table person add foreign key(groupid) references groupa(id) on delete cascade;
