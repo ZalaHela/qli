@@ -1,4 +1,5 @@
-create database apka;
+create database if not exists apka;
+use apka;
 
 CREATE TABLE IF NOT EXISTS `groupa` (
   `id` int(11) NOT NULL AUTO_INCREMENT,

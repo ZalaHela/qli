@@ -1,3 +1,4 @@
+-- base
 alter table person add column dataurodzenia date;
 alter table timport add column phone text;
 alter table harmonogram drop COLUMN taryfaid;
@@ -5,9 +6,10 @@ alter table harmonogram add column oplaty_miesieczne text;
 alter table timport add column groupid int;
 ALTER TABLE `person` CHANGE `last` `last` TEXT CHARACTER SET utf8 COLLATE utf8_polish_ci NULL DEFAULT NULL;
 ALTER TABLE `timport` CHANGE `tytul` `tytul` TEXT CHARACTER SET utf8 COLLATE utf8_polish_ci NULL DEFAULT NULL;
-ALTER TABLE `harmonogram` CHANGE `oplaty_miesieczne` `oplaty_miesieczne` TEXT CHARACTER SET utf8 COLLATE utf8_polish_ci NULL DEFAULT NULL;
-
 
 alter table person add foreign key(groupid) references groupa(id) on delete cascade;
 alter table person add foreign key(harmonogramid) references harmonogram(id) on delete set null;
 alter table platnosci add foreign key(pid) references person(id) on delete cascade;
+
+-- fix-0.0.1
+ALTER TABLE `harmonogram` CHANGE `oplaty_miesieczne` `oplaty_miesieczne` TEXT CHARACTER SET utf8 COLLATE utf8_polish_ci NULL DEFAULT NULL;
